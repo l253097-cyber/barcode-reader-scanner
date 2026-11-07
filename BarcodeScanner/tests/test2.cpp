@@ -77,7 +77,14 @@ void runMember2Tests()
     check("module 3 black (columns 6-7)", matrix[0][6] == 1 && matrix[0][7] == 1);
     check("last row same as first row", matrix[2][0] == 1 && matrix[2][4] == 0);
     check("last column is black (stop pattern)", matrix[0][113] == 1);
-   
+    check("invalid data rejected",
+        !BarcodeRenderer::createPixelMatrix("1a1", 2, 3, matrix, w, h));
+    check("moduleWidth 0 rejected",
+        !BarcodeRenderer::createPixelMatrix(valid, 0, 3, matrix, w, h));
+    check("height 0 rejected",
+        !BarcodeRenderer::createPixelMatrix(valid, 2, 0, matrix, w, h));
+    check("too wide rejected (57 x 11 = 627 > 600)",
+        !BarcodeRenderer::createPixelMatrix(valid, 11, 3, matrix, w, h));
 
     std::cout << "Result: " << passed << " passed, " << failed << " failed\n";
 }
