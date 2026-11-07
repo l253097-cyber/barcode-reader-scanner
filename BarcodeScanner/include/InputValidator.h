@@ -20,7 +20,7 @@ public:
 		//checks for if string has valid length of 6
 		static bool hasValidLength(const std::string& s);
 		//keeping in view above 3 functions it validates the input and returns error message if any of the above 3 conditions are not met
-		static bool isValidInput(const std::string& s, std::string& errorMessage);
+		static bool  validateSixDigitInput(const std::string& s, std::string& errorMessage);
 
     // Member 2: checks encoded sequence contains only '0'/'1' and is valid
     static bool validateEncodedData(const std::string& encoded);

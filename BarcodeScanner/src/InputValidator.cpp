@@ -19,7 +19,7 @@ bool InputValidator::isNumeric(const string& s) {
 bool InputValidator::hasValidLength(const string& s) {
 	return s.length() == 6;
 }
-bool InputValidator::isValidInput(const string& s, string& errorMessage) {
+bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage) {
 	errorMessage = "";
 	if (isEmpty(s)) {
 		errorMessage = "Input is empty. Please enter a 6-digit number.";
