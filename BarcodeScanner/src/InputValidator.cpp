@@ -14,8 +14,7 @@ bool InputValidator::validateSixDigitInput(const std::string& input)
 
 // ===== Member 2: validateEncodedData =====
 /* Checks that an encoded barcode string is valid before we draw it.
- * Input    : encoded -> string made of '1' (black bar) and '0' (white space)
- * Returns  : true if valid, false if invalid
+ * encoded -> string made of '1' (black bar) and '0' (white space)
  */
 bool InputValidator::validateEncodedData(const std::string& encoded)
 {
@@ -58,16 +57,14 @@ bool InputValidator::validateEncodedData(const std::string& encoded)
     {
         return false;
     }
-
     // Everything except the stop (13) must be whole symbols of 11 modules
     if ((length - 13) % 11 != 0)
     {
         return false;
     }
     // The first 11 characters must be one of the three start patterns
-    bool validStart = (encoded.compare(0, 11, START_A) == 0) ||
-        (encoded.compare(0, 11, START_B) == 0) ||
-        (encoded.compare(0, 11, START_C) == 0);
+    bool validStart = (encoded.compare(0, 11, START_A) == 0) || (encoded.compare(0, 11, START_B) == 0) ||
+         (encoded.compare(0, 11, START_C) == 0);
     if (!validStart)
     {
         return false;
