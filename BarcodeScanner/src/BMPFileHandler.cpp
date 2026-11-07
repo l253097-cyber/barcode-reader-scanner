@@ -37,7 +37,27 @@ bool BMPFileHandler::writeBMPPixelData(std::ofstream& file, const int matrix[][M
     int rowBytes = width * 3;
     int padding = (4 - (rowBytes % 4)) % 4;
 
-    return false;   
+               // (+3 - maximum possible padding)
+    unsigned char rowBuffer[MAX_WIDTH * 3 + 3];
+
+    for (int row = height - 1; row >= 0; row--)
+    {
+        int pos = 0;  
+        // convert each pixel of this row into 3 bytes
+        for (int col = 0; col < width; col++)
+        {
+            unsigned char colour = 255;     // default white
+            if (matrix[row][col] == 1)
+            {
+                colour = 0;                 // black pixel
+            }
+
+            rowBuffer[pos++] = colour;      // Blue
+            rowBuffer[pos++] = colour;      // Green
+            rowBuffer[pos++] = colour;      // Red
+        }
+
+    }
 }
 
 
