@@ -130,11 +130,47 @@ void runMember2Tests()
     in.read((char*)data, 1200);
     int bytesRead = (int)in.gcount();
     in.close();
-
     check("file size is 54 + 1032 = 1086", bytesRead == 1086);
-    check("first pixel is black",
-        data[54] == 0 && data[55] == 0 && data[56] == 0);
-    check("pixel at column 4 is white",
-        data[66] == 255 && data[67] == 255 && data[68] == 255);
+    check("first pixel is black",data[54] == 0 && data[55] == 0 && data[56] == 0);
+    check("pixel at column 4 is white",data[66] == 255 && data[67] == 255 && data[68] == 255);
     check("padding bytes are 0", data[396] == 0 && data[397] == 0);
+
+    // 2 x 2 image: top row black, bottom row white (BMP stores bottom first)
+    // Row = 6 bytes + 2 padding = 8, file = 54 + 16 = 70
+    matrix[0][0] = 1;  matrix[0][1] = 1;
+    matrix[1][0] = 0;  matrix[1][1] = 0;
+    {
+        std::ofstream out2(fileName, std::ios::binary);
+        for (int i = 0; i < 54; i++)
+        {
+            out2.put(0);
+        }
+        check("2x2 image written",
+            BMPFileHandler::writeBMPPixelData(out2, matrix, 2, 2));
+    }
+    std::ifstream in2(fileName, std::ios::binary);
+    in2.read((char*)data, 1200);
+    bytesRead = (int)in2.gcount();
+    in2.close();
+    check("2x2 file size is 54 + 16 = 70", bytesRead == 70);
+    check("bottom row (white) is written first", data[54] == 255);
+    check("top row (black) is written last", data[62] == 0);
+    check("2x2 padding bytes are 0", data[60] == 0 && data[61] == 0);
+    check("width 0 rejected", [&]() {
+        std::ofstream bad(fileName, std::ios::binary);
+        return !BMPFileHandler::writeBMPPixelData(bad, matrix, 0, 3);
+        }());
+    check("height 0 rejected", [&]() {
+        std::ofstream bad(fileName, std::ios::binary);
+        return !BMPFileHandler::writeBMPPixelData(bad, matrix, 2, 0);
+        }());
+    check("width above MAX_WIDTH rejected", [&]() {
+        std::ofstream bad(fileName, std::ios::binary);
+        return !BMPFileHandler::writeBMPPixelData(bad, matrix, MAX_WIDTH + 1, 3);
+        }());
+    std::ofstream notOpened;    
+    check("unopened file rejected",
+        !BMPFileHandler::writeBMPPixelData(notOpened, matrix, 2, 2));
+    std::remove(fileName);      
+    std::cout << "Result: " << passed << " passed, " << failed << " failed\n";
 }
