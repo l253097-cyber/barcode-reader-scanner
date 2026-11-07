@@ -57,7 +57,18 @@ bool BMPFileHandler::writeBMPPixelData(std::ofstream& file, const int matrix[][M
             rowBuffer[pos++] = colour;      // Red
         }
 
+        // add padding bytes at the end of the row
+        for (int p = 0; p < padding; p++)
+        {
+            rowBuffer[pos++] = 0;
+        }
+        file.write((const char*)rowBuffer, pos);
+        if (!file)
+        {
+            return false;
+        }
     }
+    return true;
 }
 
 
