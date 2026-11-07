@@ -1,3 +1,17 @@
+/*
+ * File    : InputValidator.cpp
+ * Purpose : Implements validation functions (shared by 4 members)
+ */
+#include <string>
+#include "InputValidator.h"
+
+ // ===== Member 1: validateSixDigitInput =====
+bool InputValidator::validateSixDigitInput(const std::string& input)
+{
+    // TODO (Member 1)
+    return false;
+}
+
 // ===== Member 2: validateEncodedData =====
 /* Checks that an encoded barcode string is valid before we draw it.
  * Input    : encoded -> string made of '1' (black bar) and '0' (white space)
@@ -28,4 +42,21 @@ bool InputValidator::validateEncodedData(const std::string& encoded)
         }
     }
     return hasBlackBar;
+}
+
+
+// ===== Member 3: validateBMPHeader =====
+bool InputValidator::validateBMPHeader(const unsigned char header[], int size)
+{
+    // TODO (Member 3)
+    return false;
+}
+
+
+
+// ===== Member 4: validateScannedPattern =====
+bool InputValidator::validateScannedPattern(const std::string& pattern)
+{
+    // TODO (Member 4)
+    return false;
 }
