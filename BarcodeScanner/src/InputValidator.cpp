@@ -64,7 +64,6 @@ bool InputValidator::validateEncodedData(const std::string& encoded)
     {
         return false;
     }
-
     // The first 11 characters must be one of the three start patterns
     bool validStart = (encoded.compare(0, 11, START_A) == 0) ||
         (encoded.compare(0, 11, START_B) == 0) ||
@@ -73,13 +72,11 @@ bool InputValidator::validateEncodedData(const std::string& encoded)
     {
         return false;
     }
-
     // The last 13 characters must be exactly the stop pattern
     if (encoded.compare(length - 13, 13, STOP) != 0)
     {
         return false;
     }
-
     return true;
 }
 
