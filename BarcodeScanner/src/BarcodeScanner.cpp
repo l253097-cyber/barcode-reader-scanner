@@ -14,12 +14,17 @@ bool BarcodeScanner::scanPixelRow(const int matrix[][MAX_WIDTH], int width, int 
     // Matrix convention: 1 = black, 0 = white
     for (int x = 0; x < width; x++)
         outPixels[x] = (matrix[row][x] == 1) ? '1' : '0';
-    outPixels[width] = '\0';   // end the string
+    outPixels[width] = '\0';   //end the string
     return true;
 }
 
+//Run-length encoding: "00110100" -> {2, 2, 1, 1, 2}
+//The first run has the colour of the first pixel. Margins are not trimmed.
 int BarcodeScanner::detectBarWidths(const char rowPixels[], int widths[], int maxRuns)
 {
-    // TODO (Member 3)
-    return 0;
+    if (rowPixels == nullptr || widths == nullptr || maxRuns <= 0) return 0;
+    if (rowPixels[0] == '\0') return 0;
+    if (rowPixels[0] != '0' && rowPixels[0] != '1') return 0;
+
+    return 0;   // run counting is added in the next commit
 }
