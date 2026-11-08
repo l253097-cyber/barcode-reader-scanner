@@ -29,7 +29,9 @@ public:
     static bool validateBMPHeader(const unsigned char header[], int size);
 
     // Member 4: checks pattern received from scanner
-    static bool validateScannedPattern(const std::string& pattern);
+	static const int expected_length = 68;
+	static bool validateScannedPattern(const std::string& pattern)
+
 };
 
 #endif

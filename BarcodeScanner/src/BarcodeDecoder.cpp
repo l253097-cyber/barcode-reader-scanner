@@ -3,12 +3,19 @@
  * Purpose : Pattern decoding and verification (Members 4 and 5)
  */
 #include "BarcodeDecoder.h"
+#include"BarcodeEncoder.h"
 
  // ===== Member 4: decodeDigitPattern =====
-char BarcodeDecoder::decodeDigitPattern(const std::string& pattern)
+int BarcodeDecoder::decodeDigitPattern(const std::string& pattern)
 {
-    // TODO (Member 4)
-    return '?';
+    if (pattern.length() != 11)
+        return -1;
+    for (int v = 0;v <= 102;v++)
+    {
+        if(BarcodeEncoder::getDigitPattern(v)==pattern)
+            return v;
+    }
+    return -1;
 }
 
 
