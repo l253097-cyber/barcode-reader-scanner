@@ -4,11 +4,14 @@
  */
 #include "BarcodeScanner.h"
 
-bool BarcodeScanner::scanPixelRow(const int matrix[][MAX_WIDTH],
-    int width, int height, int row, char outPixels[])
+bool BarcodeScanner::scanPixelRow(const int matrix[][MAX_WIDTH], int width, int height, int row, char outPixels[])
 {
-    // TODO (Member 3)
-    return false;
+    if (matrix == nullptr || outPixels == nullptr) return false;
+    if (width <= 0 || width > MAX_WIDTH) return false;
+    if (height <= 0) return false;
+    if (row < 0 || row >= height) return false;   //row must exist in the image
+
+    return false;   //row conversion is added in the next commit
 }
 
 int BarcodeScanner::detectBarWidths(const char rowPixels[], int widths[], int maxRuns)
