@@ -26,5 +26,21 @@ int BarcodeScanner::detectBarWidths(const char rowPixels[], int widths[], int ma
     if (rowPixels[0] == '\0') return 0;
     if (rowPixels[0] != '0' && rowPixels[0] != '1') return 0;
 
-    return 0;   // run counting is added in the next commit
+    int count = 0, run = 1;
+    for (int i = 1; rowPixels[i] != '\0'; i++)
+    {
+        if (rowPixels[i] != '0' && rowPixels[i] != '1') return 0;
+
+        if (rowPixels[i] == rowPixels[i - 1])
+            run++;                          // same colour: current run grows
+        else
+        {
+            if (count >= maxRuns) return 0; // widths[] would overflow
+            widths[count++] = run;          // colour changed: save the run
+            run = 1;
+        }
+    }
+    if (count >= maxRuns) return 0;
+    widths[count++] = run;                  // save the last run
+    return count;
 }
