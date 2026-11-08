@@ -163,4 +163,6 @@ void runMember3Tests()
     testReadBMPHeader();
     testScanPixelRow();
     testDetectBarWidths();
+    std::cout << "Member 3: " << g_passed << " passed, "
+        << g_failed << " failed\n";
 }
