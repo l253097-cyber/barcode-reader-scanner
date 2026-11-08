@@ -72,7 +72,7 @@ static void testValidateBMPHeader()
     check("validateBMPHeader: buffer of 20 bytes rejected",
         !InputValidator::validateBMPHeader(h, 20));
 }
-
+//---
 // Write raw bytes to a temporary file
 static void writeTempFile(const char* path, const unsigned char* data, int n)
 {
@@ -112,11 +112,33 @@ static void testReadBMPHeader()
 
     std::remove(path);            // clean up the temporary file
 }
+//---
+static void testScanPixelRow()
+{
+    static int matrix[1][MAX_WIDTH];            // zero-filled, 1 row
+    int row[8] = { 0, 0, 1, 1, 0, 1, 0, 0 };
+    for (int x = 0; x < 8; x++) matrix[0][x] = row[x];
 
+    char out[MAX_WIDTH + 1];
+
+    bool ok = BarcodeScanner::scanPixelRow(matrix, 8, 1, 0, out);
+    check("scanPixelRow: row gives \"00110100\"",
+        ok && std::strcmp(out, "00110100") == 0);
+
+    check("scanPixelRow: row past the last row rejected",
+        !BarcodeScanner::scanPixelRow(matrix, 8, 1, 1, out));
+
+    check("scanPixelRow: negative row rejected",
+        !BarcodeScanner::scanPixelRow(matrix, 8, 1, -1, out));
+
+    check("scanPixelRow: width above MAX_WIDTH rejected",
+        !BarcodeScanner::scanPixelRow(matrix, MAX_WIDTH + 1, 1, 0, out));
+}
 
 void runMember3Tests()
 {
     std::cout << "\n--- Member 3 Tests ---\n";
     testValidateBMPHeader();
     testReadBMPHeader();
+    testScanPixelRow();
 }
