@@ -11,7 +11,11 @@ bool BarcodeScanner::scanPixelRow(const int matrix[][MAX_WIDTH], int width, int 
     if (height <= 0) return false;
     if (row < 0 || row >= height) return false;   //row must exist in the image
 
-    return false;   //row conversion is added in the next commit
+    // Matrix convention: 1 = black, 0 = white
+    for (int x = 0; x < width; x++)
+        outPixels[x] = (matrix[row][x] == 1) ? '1' : '0';
+    outPixels[width] = '\0';   // end the string
+    return true;
 }
 
 int BarcodeScanner::detectBarWidths(const char rowPixels[], int widths[], int maxRuns)
