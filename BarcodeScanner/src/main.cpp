@@ -1,10 +1,8 @@
 
 #include <iostream>
-void runMember4Tests();
 int main()
 {
     std::cout << "=== Barcode Reader and Scanner ===\n";
-    runMember4Tests();
     return 0;
 }
 
