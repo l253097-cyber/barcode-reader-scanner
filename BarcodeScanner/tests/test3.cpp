@@ -73,8 +73,50 @@ static void testValidateBMPHeader()
         !InputValidator::validateBMPHeader(h, 20));
 }
 
+// Write raw bytes to a temporary file
+static void writeTempFile(const char* path, const unsigned char* data, int n)
+{
+    std::ofstream out(path, std::ios::binary);
+    out.write(reinterpret_cast<const char*>(data), n);
+}
+
+static void testReadBMPHeader()
+{
+    const char* path = "tmp_member3.bmp";
+    unsigned char h[54];
+    int w = 0, ht = 0, bd = 0, off = 0;
+
+    makeHeader(h, 120, 40, 24);
+    writeTempFile(path, h, 54);
+    {
+        std::ifstream f(path, std::ios::binary);
+        bool ok = BMPFileHandler::readBMPHeader(f, w, ht, bd, off);
+        check("readBMPHeader: valid file gives 120, 40, 24, 54",
+            ok && w == 120 && ht == 40 && bd == 24 && off == 54);
+    }
+
+    writeTempFile(path, h, 30);   // file shorter than a header
+    {
+        std::ifstream f(path, std::ios::binary);
+        check("readBMPHeader: truncated file rejected",
+            !BMPFileHandler::readBMPHeader(f, w, ht, bd, off));
+    }
+
+    h[0] = 'X';                   // not a BMP
+    writeTempFile(path, h, 54);
+    {
+        std::ifstream f(path, std::ios::binary);
+        check("readBMPHeader: non-BMP signature rejected",
+            !BMPFileHandler::readBMPHeader(f, w, ht, bd, off));
+    }
+
+    std::remove(path);            // clean up the temporary file
+}
+
+
 void runMember3Tests()
 {
     std::cout << "\n--- Member 3 Tests ---\n";
     testValidateBMPHeader();
+    testReadBMPHeader();
 }
