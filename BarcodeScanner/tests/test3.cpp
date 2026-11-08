@@ -134,6 +134,27 @@ static void testScanPixelRow()
     check("scanPixelRow: width above MAX_WIDTH rejected",
         !BarcodeScanner::scanPixelRow(matrix, MAX_WIDTH + 1, 1, 0, out));
 }
+//---
+static void testDetectBarWidths()
+{
+    int w[16];
+
+    int n = BarcodeScanner::detectBarWidths("00110100", w, 16);
+    check("detectBarWidths: \"00110100\" gives {2,2,1,1,2}",
+        n == 5 && w[0] == 2 && w[1] == 2 && w[2] == 1 && w[3] == 1 && w[4] == 2);
+
+    n = BarcodeScanner::detectBarWidths("1111", w, 16);
+    check("detectBarWidths: \"1111\" gives {4}", n == 1 && w[0] == 4);
+
+    check("detectBarWidths: empty string returns 0",
+        BarcodeScanner::detectBarWidths("", w, 16) == 0);
+
+    check("detectBarWidths: maxRuns too small returns 0",
+        BarcodeScanner::detectBarWidths("010101", w, 3) == 0);
+
+    check("detectBarWidths: invalid character returns 0",
+        BarcodeScanner::detectBarWidths("01x1", w, 16) == 0);
+}
 
 void runMember3Tests()
 {
@@ -141,4 +162,5 @@ void runMember3Tests()
     testValidateBMPHeader();
     testReadBMPHeader();
     testScanPixelRow();
+    testDetectBarWidths();
 }
