@@ -37,7 +37,21 @@ bool BMPFileHandler::readBMPHeader(std::ifstream& file, int& width, int& height,
 
     if (!InputValidator::validateBMPHeader(header, 54)) return false;
 
-    return false;   //fields are parsed in the next commit
+    //Outputs are set only after validation passes, so a bad file
+    //never leaves half-filled values in the caller's variables.
+    //Bytes are combined little-endian, same as in the validator.
+    width = (int)((unsigned int)header[18] | ((unsigned int)header[19] << 8) |
+        ((unsigned int)header[20] << 16) | ((unsigned int)header[21] << 24));
+
+    height = (int)((unsigned int)header[22] | ((unsigned int)header[23] << 8) |
+        ((unsigned int)header[24] << 16) | ((unsigned int)header[25] << 24));
+
+    bitDepth = header[28] | (header[29] << 8);
+
+    pixelOffset = (int)((unsigned int)header[10] | ((unsigned int)header[11] << 8) |
+        ((unsigned int)header[12] << 16) | ((unsigned int)header[13] << 24));
+
+    return true;
 }
 
 
