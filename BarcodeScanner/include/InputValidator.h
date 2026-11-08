@@ -30,7 +30,7 @@ public:
 
     // Member 4: checks pattern received from scanner
 	static const int expected_length = 68;
-	static bool validateScannedPattern(const std::string& pattern)
+	static bool validateScannedPattern(const std::string& pattern);
 
 };
 

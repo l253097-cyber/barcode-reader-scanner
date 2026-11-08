@@ -19,7 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BarcodeDecoder.cpp" />
+    <ClCompile Include="src\BarcodeEncoder.cpp" />
+    <ClCompile Include="src\InputValidator.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="tests\test4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BarcodeDecoder.h" />
+    <ClInclude Include="include\BarcodeEncoder.h" />
+    <ClInclude Include="include\InputValidator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

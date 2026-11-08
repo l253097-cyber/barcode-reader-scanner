@@ -1,9 +1,10 @@
 
 #include <iostream>
-
+void runMember4Tests();
 int main()
 {
     std::cout << "=== Barcode Reader and Scanner ===\n";
+    runMember4Tests();
     return 0;
 }
 
@@ -29,7 +30,7 @@ int main()
 //    runMember1Tests();
 //    runMember2Tests();
 //    runMember3Tests();
-//    runMember4Tests();
+ //  runMember4Tests();
 //    runMember5Tests();
 //    return 0;
 //}
