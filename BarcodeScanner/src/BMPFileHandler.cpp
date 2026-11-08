@@ -35,7 +35,7 @@ bool BMPFileHandler::writeBMPHeader(std::ofstream& file, int width, int height)
 	//every bmp file starts with BM in the first 2 bytes
     file.put('B');
     file.put('M');
-    writeUInt32(file, BMP_HEADER_SIZE);
+    writeUInt32(file, fileSize);
     writeUInt32(file, 0);
     //Pixels Offset
     writeUInt32(file, BMP_HEADER_SIZE);

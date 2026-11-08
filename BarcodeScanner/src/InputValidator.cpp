@@ -34,6 +34,10 @@ bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage
 			+ to_string(s.length()) + ").";
 		return false;
 	}
+	if (s[0] == '0') {
+		errorMessage = "The first digit must be non-zero.";
+		return false;
+	}
 	return true;
 }
 

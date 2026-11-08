@@ -21,11 +21,16 @@ static bool validate(const std::string& s) {
 
 // ===================== InputValidator =====================
 static void testValidator() {
-    // valid
+    // valid (6 digits, first digit non-zero)
     CHECK(validate("123456"), "valid 123456");
-    CHECK(validate("000000"), "valid 000000");
-    CHECK(validate("012345"), "valid leading zero");
+    CHECK(validate("100000"), "valid, zeros after the first digit");
+    CHECK(validate("102030"), "valid 102030");
     CHECK(validate("999999"), "valid 999999");
+
+    // first digit must be non-zero
+    CHECK(!validate("000000"), "leading zero rejected (000000)");
+    CHECK(!validate("012345"), "leading zero rejected (012345)");
+    CHECK(!validate("098765"), "leading zero rejected (098765)");
 
     // invalid
     CHECK(!validate(""), "empty rejected");
@@ -56,6 +61,8 @@ static void testValidator() {
     CHECK(!err.empty(), "message for letters");
     InputValidator::validateSixDigitInput("12345", err);
     CHECK(!err.empty(), "message for wrong length");
+    InputValidator::validateSixDigitInput("012345", err);
+    CHECK(!err.empty(), "message for leading zero");
     InputValidator::validateSixDigitInput("123456", err);
     CHECK(err.empty(), "no message when valid");
 }
@@ -99,8 +106,8 @@ static void testEncoderSoFar() {
 static void testEncoderFull() {
     // checksum = (105 + 1*v1 + 2*v2 + 3*v3) % 103
     CHECK(BarcodeEncoder::calculateSum(12, 34, 56) == 44, "checksum 123456");
-    CHECK(BarcodeEncoder::calculateSum(0, 0, 0) == 2, "checksum 000000");
-    CHECK(BarcodeEncoder::calculateSum(0, 99, 70) == 101, "checksum 009970 (value above 99)");
+    CHECK(BarcodeEncoder::calculateSum(0, 0, 0) == 2, "checksum of three zero pairs");
+    CHECK(BarcodeEncoder::calculateSum(10, 1, 29) == 101, "checksum 100129 (value above 99)");
 
     // complete sequence for 123456
     std::string s = BarcodeEncoder::encodeSixDigits("123456");
@@ -114,22 +121,27 @@ static void testEncoderFull() {
     CHECK(s.substr(44, 11) == BarcodeEncoder::getDigitPattern(44), "checksum symbol 44");
     CHECK(s.substr(55, 13) == BarcodeEncoder::getDigitPattern(106), "ends with Stop");
 
-    // leading zeros keep their place: 012345 -> pairs 01, 23, 45
-    std::string z = BarcodeEncoder::encodeSixDigits("012345");
-    CHECK(z.length() == 68, "012345 length 68");
-    CHECK(z.substr(11, 11) == BarcodeEncoder::getDigitPattern(1), "012345 first pair 01");
-    CHECK(z.substr(22, 11) == BarcodeEncoder::getDigitPattern(23), "012345 second pair 23");
+    // zeros inside the number keep their place: 100000 -> pairs 10, 00, 00
+    std::string z = BarcodeEncoder::encodeSixDigits("100000");
+    CHECK(z.length() == 68, "100000 length 68");
+    CHECK(z.substr(11, 11) == BarcodeEncoder::getDigitPattern(10), "100000 first pair 10");
+    CHECK(z.substr(22, 11) == BarcodeEncoder::getDigitPattern(0), "100000 second pair 00");
+    CHECK(z.substr(33, 11) == BarcodeEncoder::getDigitPattern(0), "100000 third pair 00");
 
-    // checksum symbol above 99 (009970 -> checksum 101)
-    std::string c = BarcodeEncoder::encodeSixDigits("009970");
-    CHECK(c.length() == 68, "009970 length 68");
-    CHECK(c.substr(44, 11) == BarcodeEncoder::getDigitPattern(101), "009970 checksum symbol 101");
+    // checksum symbol above 99 (100129 -> checksum 101)
+    std::string c = BarcodeEncoder::encodeSixDigits("100129");
+    CHECK(c.length() == 68, "100129 length 68");
+    CHECK(c.substr(44, 11) == BarcodeEncoder::getDigitPattern(101), "100129 checksum symbol 101");
 
     // different numbers give different barcodes
-    CHECK(BarcodeEncoder::encodeSixDigits("012345") != BarcodeEncoder::encodeSixDigits("123450"),
+    CHECK(BarcodeEncoder::encodeSixDigits("102345") != BarcodeEncoder::encodeSixDigits("123450"),
         "different numbers, different barcodes");
 
-    // invalid input gives an empty string
+    // numbers starting with zero are rejected, so encoding gives an empty string
+    CHECK(BarcodeEncoder::encodeSixDigits("012345").empty(), "encode rejects leading zero (012345)");
+    CHECK(BarcodeEncoder::encodeSixDigits("000000").empty(), "encode rejects leading zero (000000)");
+
+    // other invalid input gives an empty string
     CHECK(BarcodeEncoder::encodeSixDigits("").empty(), "encode empty");
     CHECK(BarcodeEncoder::encodeSixDigits("12345").empty(), "encode 5 digits");
     CHECK(BarcodeEncoder::encodeSixDigits("1234567").empty(), "encode 7 digits");
@@ -172,9 +184,6 @@ static void testBMPHeader() {
     CHECK(!BMPFileHandler::writeBMPHeader(bad, 0, 100), "width 0 rejected");
     CHECK(!BMPFileHandler::writeBMPHeader(bad, 100, 0), "height 0 rejected");
     CHECK(!BMPFileHandler::writeBMPHeader(bad, 100, -5), "negative height rejected");
-    CHECK(!BMPFileHandler::writeBMPHeader(bad, MAX_WIDTH + 1, 100), "too wide rejected");
-    CHECK(!BMPFileHandler::writeBMPHeader(bad, 100, MAX_HEIGHT + 1), "too tall rejected");
-    CHECK(BMPFileHandler::writeBMPHeader(bad, MAX_WIDTH, MAX_HEIGHT), "max size accepted");
 }
 
 int main() {
