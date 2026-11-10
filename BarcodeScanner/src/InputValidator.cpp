@@ -2,43 +2,47 @@
  * File    : InputValidator.cpp
  * Purpose : Implements validation functions (shared by 4 members)
  */
-#include "InputValidator.h"
 #include<iostream>
 using namespace std;
- // ===== Member 1: validateSixDigitInput =====
-bool InputValidator::validateSixDigitInput(string& input)
-{
-        // 1. empty
-        if (input.empty()) {
-            cout << "Error: Input is empty. Please enter a 6-digit number.\n";
-            return false;
-        }
-
-        // 2. digits only (catches letters, spaces, dots, + and -)
-        for (size_t i = 0; i < input.length(); i++) {
-            if (input[i] < '0' || input[i] > '9') {
-                cout << "Error: Input must contain digits (0-9) only.\n";
-                return false;
-            }
-        }
-
-        // 3. exactly 6 digits
-        if (input.length() != 6) {
-            cout << "Error: Input must be exactly 6 digits (you entered "
-                << input.length() << ").\n";
-            return false;
-        }
-
-        // 4. first digit must be non-zero
-        if (input[0] == '0') {
-            cout << "Error: The first digit must be non-zero.\n";
-            return false;
-        }
+//hepler functions -member1
+bool InputValidator::isEmpty(const string& s) {
+	return s.empty();
+}
+bool InputValidator::isNumeric(const string& s) {
+	for (size_t i = 0; i < s.length(); i++) {
+		if (s[i] < '0' || s[i] > '9')
+			return false;
+	}
+	return true;
+}
+bool InputValidator::hasValidLength(const string& s) {
+	return s.length() == 6;
+}
+bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage) {
+	errorMessage = "";
+	if (isEmpty(s)) {
+		errorMessage = "Input is empty. Please enter a 6-digit number.";
+		return false;
+	}
+	if (!isNumeric(s)) {
+		errorMessage = "Input must contain digits (0-9) only.";
+		return false;
+	}
+	if (!hasValidLength(s)) {
+		errorMessage = "Input must be exactly 6 digits (you entered "
+			+ to_string(s.length()) + ").";
+		return false;
+	}
+	if (s[0] == '0') {
+		errorMessage = "The first digit must be non-zero.";
+		return false;
+	}
+	return true;
+}
 
         return true;
 
 }
-
 
 
 // ===== Member 2: validateEncodedData =====
