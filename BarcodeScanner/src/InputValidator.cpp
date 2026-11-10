@@ -22,6 +22,21 @@ bool InputValidator::hasValidLength(const string& s) {
 	return s.length() == 6;
 }
 bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage)
+
+ //BMP stores numbers in little-endian order (lowest byte first),
+ //so these helpers rebuild a number from its bytes.
+static int le16(const unsigned char* p)
+{
+    return (int)(p[0] | (p[1] << 8));
+}
+
+static int le32(const unsigned char* p)
+{
+    return (int)((unsigned int)p[0] | ((unsigned int)p[1] << 8) | ((unsigned int)p[2] << 16) | ((unsigned int)p[3] << 24));
+}
+
+ // ===== Member 1: validateSixDigitInput =====
+bool InputValidator::validateSixDigitInput(const std::string& input)
 {
 	errorMessage = "";
 	if (isEmpty(s)) {
@@ -125,9 +140,14 @@ static int le32(const unsigned char* p)
 bool InputValidator::validateBMPHeader(const unsigned char header[], int size)
 {
     //The standard header is 54 bytes (14 file header + 40 info header)
+
     if (header == nullptr || size < 54)
         return false;
     if (header[0] != 'B' || header[1] != 'M')
+        return false;
+    if (header == nullptr || size < 54) 
+        return false;
+    if (header[0] != 'B' || header[1] != 'M') 
         return false;
 
     //Field positions follow the BMP file format
@@ -149,9 +169,11 @@ bool InputValidator::validateBMPHeader(const unsigned char header[], int size)
     //so the pixel reader can always assume the same row order.
     if (height <= 0) return false;
 
-    if (pixelOffset < 54) return false;
+    if (pixelOffset < 54) 
+        return false;
+
     return true;
-    return false;
+
 }
 
 

@@ -66,7 +66,53 @@ void BarcodeSystem::generateBarcode(string input)
     cout << "Barcode generated successfully!\n";
     cout << "Saved as: " << filename << endl;
 }
+void BarcodeSystem::decodeBarcode(string filename)
+{
+    ifstream file(filename, ios::binary);
+    if (!file.is_open())
+    {
+        cout << "Error: could not open file.\n";
+        return;
+    }
 
+    unsigned char header[54];
+    file.read((char*)header, 54);
+    if (file.gcount() != 54 || !validator.validateBMPHeader(header, 54))
+    {
+        cout << "Error: invalid BMP file.\n";
+        return;
+    }
+
+    static int matrix[MAX_HEIGHT][MAX_WIDTH];
+    int imgWidth = 0, imgHeight = 0;
+
+    if (!bmpHandler.readBMPHeader(header, imgWidth, imgHeight) ||
+        !bmpHandler.readBMPPixelData(file, matrix, imgWidth, imgHeight))
+    {
+        cout << "Error: could not read BMP pixel data.\n";
+        return;
+    }
+    file.close();
+
+    string pattern = scanner.extractPattern(matrix, imgWidth, imgHeight);
+    if (pattern.empty())
+    {
+        cout << "Error: no barcode found in image.\n";
+        return;
+    }
+
+    string number = decoder.decodeSixDigits(pattern);
+    if (number.empty())
+    {
+        cout << "Error: could not decode barcode.\n";
+        return;
+    }
+
+    cout << "Barcode scanned successfully!\n";
+    cout << "Decoded number: " << number << endl;
+}
+
+}
 void BarcodeSystem::showMenu()
 {
     string line;
@@ -98,7 +144,10 @@ void BarcodeSystem::showMenu()
         }
         else if (choice == 2)
         {
-            cout << "Scan Barcode is not integrated yet.\n";   // system.scanBarcode()
+            string filename;
+            cout << "Enter BMP filename to scan: ";
+            getline(cin, filename);
+            decodeBarcode(filename);
         }
         else if (choice != 0)
         {

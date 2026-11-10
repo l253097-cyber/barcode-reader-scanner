@@ -18,5 +18,6 @@ class BarcodeSystem
 public:
 	void generateBarcode(string input);
 	void showMenu();
+	void decodeBarcode(string filename);
 };
 #endif
