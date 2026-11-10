@@ -153,9 +153,28 @@ bool BMPFileHandler::readBMPHeader(std::ifstream& file, int& width, int& height,
 
 
 // ===== Member 4: readBMPPixelData =====
-bool BMPFileHandler::readBMPPixelData(std::ifstream& file,
-    int matrix[][MAX_WIDTH], int width, int height, int pixelOffset)
+bool BMPFileHandler::readBMPPixelData(std::ifstream& file, int matrix[][MAX_WIDTH], int width, int height, int pixelOffset)
 {
-    // TODO (Member 4)
-    return false;
+    if (!file.is_open() || width <= 0 || height <= 0 || width > MAX_WIDTH || pixelOffset < 5)
+        return false;
+    file.clear();
+    file.seekg(pixelOffset, std::ios::beg);
+    if (!file)
+        return false;
+    int rowbytes = width * 3;
+    int padding = (4 - (rowbytes % 4)) % 4;
+    for (int r = height - 1;r >= 0;r--)
+    {
+        for (int c = 0;c < width;c++)
+        {
+            unsigned char bgr[3];
+            file.read(reinterpret_cast<char*>(bgr), 3);
+            if (file.gcount() != 3)
+                return false;
+            int gray = (bgr[0] + bgr[1] + bgr[2]) / 3;
+            matrix[r][c] = (gray < 128) ? 1 : 0;
+        }
+        file.ignore(padding);
+    }
+    return true;
 }
