@@ -7,13 +7,14 @@
 #define INPUT_VALIDATOR_H
 
 #include <string>
+using namespace std;
 #include "Config.h"
 
 class InputValidator
 {
 public:
     // Member 1: checks user input is exactly 6 digits
-    static bool validateSixDigitInput(const std::string& input);
+    static bool validateSixDigitInput(string& input);
 
     // Member 2: checks encoded sequence contains only '0'/'1' and is valid
     static bool validateEncodedData(const std::string& encoded);

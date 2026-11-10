@@ -1,10 +1,17 @@
 
 #include <iostream>
+using namespace std;
+#include <iostream>
+#include <string>
+#include "BarcodeSystem.h"
+using namespace std;
 
 int main()
 {
-    std::cout << "=== Barcode Reader and Scanner ===\n";
-    return 0;
+    BarcodeSystem system;
+
+    system.ShowMenu();
+   
 }
 
 ///*
