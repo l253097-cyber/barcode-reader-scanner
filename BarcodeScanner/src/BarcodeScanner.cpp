@@ -44,3 +44,29 @@ int BarcodeScanner::detectBarWidths(const char rowPixels[], int widths[], int ma
     widths[count++] = run;                  // save the last run
     return count;
 }
+
+string BarcodeScanner::widthsToPattern(const char rowPixels[], const int widths[], int runCount)
+{
+    if (runCount < 3)
+        return "";
+    if (rowPixels[0] != '0')
+        return "";      // must start with a white quiet zone
+
+    int moduleWidth = widths[1];
+    for (int i = 1; i < runCount - 1; i++)
+        if (widths[i] < moduleWidth) 
+            moduleWidth = widths[i];
+    if (moduleWidth <= 0) 
+        return "";
+
+    string pattern;
+    char colour = '1';                        // first run after the margin is black
+    for (int i = 1; i < runCount - 1; i++)
+    {
+        int modules = widths[i] / moduleWidth;   // how many modules wide this bar is
+        for (int k = 0; k < modules; k++)
+            pattern += colour;                   // add one character per module
+        colour = (colour == '1') ? '0' : '1';
+    }
+    return pattern;
+}

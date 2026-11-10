@@ -165,7 +165,7 @@ bool InputValidator::validateBMPHeader(const unsigned char header[], int size)
 
 
 // ===== Member 4: validateScannedPattern =====
-bool InputValidator::validateScannedPattern(const std::string& pattern)
+bool InputValidator::validateScannedPattern(const string& pattern)
 {
 	if (pattern.empty())
 		return false;
