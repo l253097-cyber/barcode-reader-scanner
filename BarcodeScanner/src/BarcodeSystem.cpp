@@ -4,12 +4,23 @@
 using namespace std;
 void BarcodeSystem::generateBarcode(string input)
 {
-	if (!validator.validateSixDigitInput(input))
+    string error_message="";
+
+	if (!validator.validateSixDigitInput(input,error_message))
 	{
+        cout << error_message << endl;
 		return;
 	}
+    string pattern = encoder.encodeSixDigits(input);
+    if (pattern.empty())
+    {
+        cout << "Error: encoding failed.\n";
+        return;
+    }
 
-
+    // temporary: print it to check the encoder
+    cout << "Encoded pattern (" << pattern.length() << " modules):\n"
+        << pattern << "\n";
 
 }
 void BarcodeSystem::showMenu()

@@ -3,6 +3,7 @@
  * Purpose : Implements validation functions (shared by 4 members)
  */
 #include<iostream>
+#include "InputValidator.h"
 using namespace std;
 //hepler functions -member1
 bool InputValidator::isEmpty(const string& s) {
@@ -18,7 +19,8 @@ bool InputValidator::isNumeric(const string& s) {
 bool InputValidator::hasValidLength(const string& s) {
 	return s.length() == 6;
 }
-bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage) {
+bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage)
+{
 	errorMessage = "";
 	if (isEmpty(s)) {
 		errorMessage = "Input is empty. Please enter a 6-digit number.";
@@ -39,11 +41,6 @@ bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage
 	}
 	return true;
 }
-
-        return true;
-
-}
-
 
 // ===== Member 2: validateEncodedData =====
 bool InputValidator::validateEncodedData(const std::string& encoded)

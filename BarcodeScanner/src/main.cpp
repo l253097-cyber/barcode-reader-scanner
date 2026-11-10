@@ -4,13 +4,20 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include "BarcodeSystem.h"
+#include "BarcodeEncoder.h"
 using namespace std;
 
 int main()
 {
+    if (!BarcodeEncoder::verifyPattern())
+    {
+        cout << "Fatal error: barcode pattern table is invalid.\n";
+        return 1;                      // stop the program
+    }
+
     BarcodeSystem system;
 
-    system.ShowMenu();
+    system.showMenu();
    
 }
 
