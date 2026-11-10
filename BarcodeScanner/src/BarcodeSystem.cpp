@@ -1,6 +1,8 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 #include "BarcodeSystem.h"
+
 using namespace std;
 void BarcodeSystem::generateBarcode(string input)
 {
@@ -18,11 +20,53 @@ void BarcodeSystem::generateBarcode(string input)
         return;
     }
 
-    // temporary: print it to check the encoder
-    cout << "Encoded pattern (" << pattern.length() << " modules):\n"
-        << pattern << "\n";
 
+    int moduleWidth = 2;
+    int barHeight = 100;
+    int quietZone = 20;
+
+    static int matrix[MAX_HEIGHT][MAX_WIDTH];
+    int imgWidth = 0, imgHeight = 0;
+
+    if (!renderer.renderBarcode(pattern, moduleWidth, barHeight, quietZone,
+        matrix, imgWidth, imgHeight))
+    {
+        cout << "Error: could not render barcode.\n";
+        return;
+    }
+
+    //  Create BMP file
+    string filename = input + ".bmp";
+
+    ofstream file(filename, ios::binary);
+
+    if (!file.is_open())
+    {
+        cout << "Error: could not create BMP file.\n";
+        return;
+    }
+
+    if (!bmpHandler.writeBMPHeader(file, imgWidth, imgHeight))
+    {
+        cout << "Error: could not write BMP header.\n";
+        file.close();
+        return;
+    }
+
+    if (!bmpHandler.writeBMPPixelData(file, matrix,
+        imgWidth, imgHeight))
+    {
+        cout << "Error: could not write BMP pixel data.\n";
+        file.close();
+        return;
+    }
+
+    file.close();
+
+    cout << "Barcode generated successfully!\n";
+    cout << "Saved as: " << filename << endl;
 }
+
 void BarcodeSystem::showMenu()
 {
     string line;

@@ -1,4 +1,5 @@
 #include <string>
+using namespace std;
 #include "BarcodeRenderer.h"
 #include "InputValidator.h"
 
@@ -12,7 +13,7 @@
  * Output: matrix, outWidth, outHeight
  * eg: "101", moduleWidth 2  ->  1 1 0 0 1 1   (width = 3 * 2 = 6)
  */
-bool BarcodeRenderer::createPixelMatrix(const std::string& encoded, int moduleWidth, int height,
+bool BarcodeRenderer::createPixelMatrix(const string& encoded, int moduleWidth, int height,
     int matrix[][MAX_WIDTH], int& outWidth, int& outHeight)
 {
     outWidth = 0;
@@ -72,7 +73,7 @@ bool BarcodeRenderer::createPixelMatrix(const std::string& encoded, int moduleWi
  * layout: [ quietZone white ][ barcode bars ][ quietZone white ]
  */
 
-bool BarcodeRenderer::renderBarcode(const std::string& encoded, int moduleWidth, int height, int quietZone,
+bool BarcodeRenderer::renderBarcode(const string& encoded, int moduleWidth, int height, int quietZone,
     int matrix[][MAX_WIDTH], int& outWidth, int& outHeight)
 {
     outWidth = 0;

@@ -3,7 +3,6 @@
  * Purpose : Digit-to-pattern encoding (Member 1)
  */
 #include "BarcodeEncoder.h"
-#include "InputValidator.h"
 using namespace std;
 static const char* const PATTERNS[107] = {
 "212222", "222122", "222221", "121223", "121322", "131222", "122213", "122312", "132212", "221213", // 0-9
@@ -20,7 +19,7 @@ static const char* const PATTERNS[107] = {
 	"2331112"//106->Stop
 };
 //helper function
-std::string BarcodeEncoder::widthsToModules(const std::string& widths) {
+string BarcodeEncoder::widthsToModules(const string& widths) {
 	string modules = "";
 	//black=1 means black color
 	//black=0 means white color 
@@ -37,15 +36,15 @@ std::string BarcodeEncoder::widthsToModules(const std::string& widths) {
 	return modules;
 }
 //helper function
-std::string BarcodeEncoder::getWidthPattern(int value) {
+string BarcodeEncoder::getWidthPattern(int value) {
 	bool ok = (value >= 0 && value <= 102) || value == START_C || value == STOP;
 	if (!ok) return "";
 	return PATTERNS[value];
 }
 //converts symbol val. to 0/1 pattern
-std::string BarcodeEncoder::getDigitPattern(int value)
+string BarcodeEncoder::getDigitPattern(int value)
 {
-	std::string widths = getWidthPattern(value);
+	string widths = getWidthPattern(value);
 	if (widths.empty())
 		return "";
 	return widthsToModules(widths);
@@ -55,13 +54,8 @@ int BarcodeEncoder::calculateSum(int pair1, int pair2, int pair3) {
 	return (START_C + pair1 * 1 + pair2 * 2 + pair3 * 3) % 103;
 }
 
-std::string BarcodeEncoder::encodeSixDigits(const std::string& sixDigits)
+string BarcodeEncoder::encodeSixDigits(const std::string& sixDigits)
 {
-	std::string error;
-	if (!InputValidator::validateSixDigitInput(sixDigits, error))
-	{
-		return "";                
-	}
 	// pairs making ,6 digits -> 3 pairs
 	int pairs[3];
 	for (int i = 0; i < 3; i++) {

@@ -3,10 +3,17 @@
 #define BARCODESYSTEM_H
 #include "InputValidator.h"
 #include "BarcodeEncoder.h"
+#include "BarcodeRenderer.h"
+#include "BarcodeDecoder.h"
+#include "BMPFileHandler.h"
+#include "Config.h"
 class BarcodeSystem
 {
 	InputValidator validator;
 	BarcodeEncoder encoder;
+	BarcodeRenderer renderer;
+	BarcodeDecoder decoder;
+	BMPFileHandler bmpHandler;
 
 public:
 	void generateBarcode(string input);
