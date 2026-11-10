@@ -2,6 +2,8 @@
  * File    : InputValidator.cpp
  * Purpose : Implements validation functions (shared by 4 members)
  */
+
+#include<iostream>
 #include <string>
 #include "InputValidator.h"
 using namespace std;
@@ -46,7 +48,8 @@ bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage
 /* Checks that an encoded barcode string is valid before we draw it.
  * encoded -> string made of '1' (black bar) and '0' (white space)
  */
-bool InputValidator::validateEncodedData(const std::string& encoded)
+
+bool InputValidator::validateEncodedData(const string& encoded)
 {
     if (encoded.empty())
     {
@@ -109,9 +112,45 @@ bool InputValidator::validateEncodedData(const std::string& encoded)
 
 
 // ===== Member 3: validateBMPHeader =====
+static int le16(const unsigned char* p)
+{
+    return (int)(p[0] | (p[1] << 8));
+}
+
+static int le32(const unsigned char* p)
+{
+    return (int)((unsigned int)p[0] | ((unsigned int)p[1] << 8) | ((unsigned int)p[2] << 16) | ((unsigned int)p[3] << 24));
+}
+
 bool InputValidator::validateBMPHeader(const unsigned char header[], int size)
 {
-    // TODO (Member 3)
+    //The standard header is 54 bytes (14 file header + 40 info header)
+    if (header == nullptr || size < 54)
+        return false;
+    if (header[0] != 'B' || header[1] != 'M')
+        return false;
+
+    //Field positions follow the BMP file format
+    int pixelOffset = le32(header + 10);
+    int dibSize = le32(header + 14);
+    int width = le32(header + 18);
+    int height = le32(header + 22);
+    int planes = le16(header + 26);
+    int bitDepth = le16(header + 28);
+    int compression = le32(header + 30);
+
+    if (dibSize < 40) return false;
+    if (planes != 1) return false;
+    if (bitDepth != 24) return false;      //only 24-bit images are supported
+    if (compression != 0) return false;    //0 = uncompressed
+    if (width <= 0 || width > MAX_WIDTH) return false;
+
+    //A negative height means a top-down image; we only accept bottom-up
+    //so the pixel reader can always assume the same row order.
+    if (height <= 0) return false;
+
+    if (pixelOffset < 54) return false;
+    return true;
     return false;
 }
 
