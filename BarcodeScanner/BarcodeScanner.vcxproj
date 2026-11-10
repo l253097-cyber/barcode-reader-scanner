@@ -23,6 +23,7 @@
     <ClCompile Include="src\BarcodeEncoder.cpp" />
     <ClCompile Include="src\BarcodeRenderer.cpp" />
     <ClCompile Include="src\BarcodeScanner.cpp" />
+    <ClCompile Include="src\BarcodeSystem.cpp" />
     <ClCompile Include="src\BMPFileHandler.cpp" />
     <ClCompile Include="src\InputValidator.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="include\BarcodeEncoder.h" />
     <ClInclude Include="include\BarcodeRenderer.h" />
     <ClInclude Include="include\BarcodeScanner.h" />
+    <ClInclude Include="include\BarcodeSystem.h" />
     <ClInclude Include="include\BMPFileHandler.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputValidator.h" />

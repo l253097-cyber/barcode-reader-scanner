@@ -6,6 +6,7 @@
 #include "BarcodeRenderer.h"
 #include "BarcodeDecoder.h"
 #include "BMPFileHandler.h"
+#include "BarcodeScanner.h"
 #include "Config.h"
 class BarcodeSystem
 {
@@ -13,6 +14,7 @@ class BarcodeSystem
 	BarcodeEncoder encoder;
 	BarcodeRenderer renderer;
 	BarcodeDecoder decoder;
+	BarcodeScanner scanner;
 	BMPFileHandler bmpHandler;
 
 public:

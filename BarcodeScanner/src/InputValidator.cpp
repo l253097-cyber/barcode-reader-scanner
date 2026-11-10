@@ -21,22 +21,8 @@ bool InputValidator::isNumeric(const string& s) {
 bool InputValidator::hasValidLength(const string& s) {
 	return s.length() == 6;
 }
+// ===== Member 1: validateSixDigitInput =====
 bool InputValidator::validateSixDigitInput(const string& s, string& errorMessage)
-
- //BMP stores numbers in little-endian order (lowest byte first),
- //so these helpers rebuild a number from its bytes.
-static int le16(const unsigned char* p)
-{
-    return (int)(p[0] | (p[1] << 8));
-}
-
-static int le32(const unsigned char* p)
-{
-    return (int)((unsigned int)p[0] | ((unsigned int)p[1] << 8) | ((unsigned int)p[2] << 16) | ((unsigned int)p[3] << 24));
-}
-
- // ===== Member 1: validateSixDigitInput =====
-bool InputValidator::validateSixDigitInput(const std::string& input)
 {
 	errorMessage = "";
 	if (isEmpty(s)) {
