@@ -19,7 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\BarcodeDecoder.cpp" />
+    <ClCompile Include="src\BarcodeEncoder.cpp" />
+    <ClCompile Include="src\BarcodeRenderer.cpp" />
+    <ClCompile Include="src\BarcodeScanner.cpp" />
+    <ClCompile Include="src\BMPFileHandler.cpp" />
+    <ClCompile Include="src\InputValidator.cpp" />
+    <ClCompile Include="tests\test5.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BarcodeDecoder.h" />
+    <ClInclude Include="include\BarcodeEncoder.h" />
+    <ClInclude Include="include\BarcodeRenderer.h" />
+    <ClInclude Include="include\BarcodeScanner.h" />
+    <ClInclude Include="include\BMPFileHandler.h" />
+    <ClInclude Include="include\Config.h" />
+    <ClInclude Include="include\InputValidator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
