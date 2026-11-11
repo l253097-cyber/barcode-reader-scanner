@@ -25,11 +25,6 @@
     <ClCompile Include="src\BarcodeScanner.cpp" />
     <ClCompile Include="src\BMPFileHandler.cpp" />
     <ClCompile Include="src\InputValidator.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="tests\test1.cpp" />
-    <ClCompile Include="tests\test2.cpp" />
-    <ClCompile Include="tests\test3.cpp" />
-    <ClCompile Include="tests\test4.cpp" />
     <ClCompile Include="tests\test5.cpp" />
   </ItemGroup>
   <ItemGroup>
