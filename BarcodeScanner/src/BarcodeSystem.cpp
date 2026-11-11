@@ -174,13 +174,13 @@ void BarcodeSystem::showMenu()
             getline(cin, input);
             generateBarcode(input);
         }
-        /*else if (choice == 2)
+        else if (choice == 2)
         {
             string filename;
             cout << "Enter BMP filename to scan: ";
             getline(cin, filename);
             decodeBarcode(filename);
-        }*/
+        }
         else if (choice != 0)
         {
             cout << "Invalid choice. Enter 0, 1 or 2.\n";

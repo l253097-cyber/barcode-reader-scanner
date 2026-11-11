@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
  // ===== Member 4: decodeDigitPattern =====
 // instead of char i used int as return type
 int BarcodeDecoder::decodeDigitPattern(const std::string& pattern)
