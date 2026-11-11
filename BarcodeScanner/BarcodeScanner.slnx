@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="BarcodeScanner.vcxproj" Id="278ba3db-446f-4532-acc7-c50216cb1f7a" />
+  <Project Path="BarcodeScanner.vcxproj" />
 </Solution>
