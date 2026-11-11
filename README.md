@@ -71,7 +71,7 @@ Our 5-member team worked under Scrum roles throughout Increment 1.
 | Branch | Purpose |
 | :--- | :--- |
 | `test` | **Integration branch.** All member branches are merged here. It acts as `main` for now and will be used until all increments are complete. |
-| `main` | Reserved for the final, finished project. |
+| `main` | Final version. Receives the merged work from `test` once the increment is complete. |
 | Member branches (for example `wajeeha`) | Each member's own work, merged into `test` by Member 5. |
 
 ---
