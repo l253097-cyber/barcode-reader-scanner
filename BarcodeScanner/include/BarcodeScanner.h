@@ -6,6 +6,8 @@
 #define BARCODE_SCANNER_H
 
 #include "Config.h"
+#include<string>
+using namespace std;
 
 class BarcodeScanner
 {
@@ -18,6 +20,9 @@ public:
     // Member 3: run-lengths of bars/spaces. Fills widths[], returns count
     // (0 on failure). First run is always the first pixel's colour.
     static int detectBarWidths(const char rowPixels[], int widths[], int maxRuns);
+   static string widthsToPattern(const char rowPixels[], const int widths[], int runCount);
 };
+
+
 
 #endif

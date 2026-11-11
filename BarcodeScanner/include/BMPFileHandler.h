@@ -23,8 +23,7 @@ public:
         int& width, int& height, int& bitDepth, int& pixelOffset);
 
     // Member 4: reads pixel data into matrix (1 = black, 0 = white)
-    static bool readBMPPixelData(std::ifstream& file,
-        int matrix[][MAX_WIDTH], int width, int height, int pixelOffset);
+    static bool readBMPPixelData(std::ifstream& file,int matrix[][MAX_WIDTH], int width, int height, int pixelOffset);
 };
 
 #endif
