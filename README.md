@@ -3,7 +3,7 @@
 > **Course:** Introduction to Software Engineering (SE-1001)
 > **Section:** BSE-3B
 > **Milestone:** Increment 1 complete
-> **Methodology:** Scrum (incremental and iterative)
+> **Methodology:** Incremental Model
 
 ---
 
@@ -12,7 +12,7 @@
 1. [Project Overview](#1-project-overview)
 2. [Features](#2-features)
 3. [Team Members & Roles](#3-team-members--roles)
-4. [Scrum & Process](#4-scrum--process)
+4. [Process](#4-process)
 5. [Increment 1 Scope & Deliverables](#5-increment-1-scope--deliverables)
 6. [Tech Stack](#6-tech-stack)
 7. [Project Architecture](#7-project-architecture)
@@ -49,7 +49,7 @@ This project is the first increment of a standalone C++ desktop application for 
 
 Our 5-member team worked under Scrum roles throughout Increment 1.
 
-| Name | Scrum Role | Core Responsibilities |
+| Name | Role | Core Responsibilities |
 | :--- | :--- | :--- |
 | **Rabiya Rana (25L-3006)** | Developer | **Input validation and barcode encoding:** validating the six-digit input, generating per-digit barcode patterns, encoding the full barcode sequence, and creating BMP file headers. |
 | **Hafsa Usman (25L-3097)** | Developer | **Barcode rendering and image writing:** validating encoded data, converting patterns into a black-and-white pixel matrix, rendering the barcode, and writing pixel data into BMP files. |
@@ -59,10 +59,8 @@ Our 5-member team worked under Scrum roles throughout Increment 1.
 
 ---
 
-## 4. Scrum & Process
+## 4. Process
 
-- **Product Backlog:** maintained on GitHub Projects, covering user stories and functional and non-functional requirements.
-- **Sprint Planning:** the project is divided into time-boxed increments.
 - **Definition of Done:** code builds, passes its unit tests, and is merged into the integration branch (`test`, see below).
 - **Version Control:** feature-branch workflow. Each member works on their own branch and makes small, meaningful commits (one clear commit per piece of work). Member 5 merges the branches.
 
