@@ -1,23 +1,28 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Managers/OrderManager.h"
-
-/*
- * ============================================================
- *  OrderManager
- *  Builds the current order and its items (add / remove / change quantity / validate).
- * ------------------------------------------------------------
- *  WHO WRITES WHAT (function ownership):
- *    Member 2 : createOrder(), addProductToOrder(), removeProductFromOrder(), updateProductQuantity(), calculateOrderSubtotal(), validateOrder()
- *  Pre-written (getters/constructors): already done, don't touch.
- *  Rule: only edit the function bodies marked with YOUR member number.
- * ============================================================
- */
+#include <ctime>
 
 bool OrderManager::createOrder(const std::string& customerName, const std::string& customerContact)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Reset detailCount to 0, generate orderId, set date/time (use <ctime>), status "Pending", then build currentOrder.
-    return false;
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2  =====
+    if (customerName == "")
+    {
+        return false;
+    }
+    detailCount = 0;
+    time_t now = time(0);
+    tm* t = localtime(&now);
+    char dateText[20];
+    char timeText[20];
+    strftime(dateText, 20, "%Y-%m-%d", t);
+    strftime(timeText, 20, "%H:%M:%S", t);
+
+    // Order ID: "ORD" ke saath seconds ka number (har baar alag)
+    std::string newId = "ORD" + std::to_string((long long)now);
+    // create new order, status pending
+    currentOrder = Order(newId, dateText, timeText, customerName, customerContact, "Pending", 0.0, "", "");
+    return true;
+    
 }
 
 bool OrderManager::addProductToOrder(const Product& product, int quantity)
