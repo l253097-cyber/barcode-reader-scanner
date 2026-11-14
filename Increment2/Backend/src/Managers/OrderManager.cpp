@@ -72,10 +72,20 @@ bool OrderManager::removeProductFromOrder(int productId)
 
 bool OrderManager::updateProductQuantity(int productId, int newQuantity)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Find the item and call setQuantity(newQuantity).
+    // ===== MEMBER 2 =====
+    if (newQuantity <= 0)
+    {
+        return false;
+    }
+    for (int i = 0; i < detailCount; i++)
+    {
+        if (orderDetails[i].getProductId() == productId)
+        {
+            orderDetails[i].setQuantity(newQuantity);
+            return true;
+        }
+    }
     return false;
-    // ===== MEMBER 2 : END =====
 }
 
 double OrderManager::calculateOrderSubtotal(const ProductManager& productManager) const
