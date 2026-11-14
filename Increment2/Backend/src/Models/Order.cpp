@@ -14,9 +14,11 @@
 
 void Order::setOrderStatus(const std::string& status)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Store the new status (e.g. "Pending", "Paid", "Cancelled") in orderStatus.
-    // ===== MEMBER 2 : END =====
+    if (status == "")
+    {
+        return;
+    }
+    orderStatus = status;
 }
 
 void Order::setPaymentDetails(double amount, const std::string& mode, const std::string& merchant)
