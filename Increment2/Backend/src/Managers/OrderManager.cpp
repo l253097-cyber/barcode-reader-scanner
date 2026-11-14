@@ -54,10 +54,20 @@ bool OrderManager::addProductToOrder(const Product& product, int quantity)
 
 bool OrderManager::removeProductFromOrder(int productId)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Find the item, shift remaining items left, detailCount--.
-    return false;
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    for (int i = 0; i < detailCount; i++)
+    {
+        if (orderDetails[i].getProductId() == productId)
+        {
+            for (int j = i; j < detailCount - 1; j++)
+            {
+                orderDetails[j] = orderDetails[j + 1];
+            }
+            detailCount--;
+            return true;
+        }
+    }
+    return false;   
 }
 
 bool OrderManager::updateProductQuantity(int productId, int newQuantity)
