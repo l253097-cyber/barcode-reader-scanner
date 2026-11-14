@@ -27,10 +27,29 @@ bool OrderManager::createOrder(const std::string& customerName, const std::strin
 
 bool OrderManager::addProductToOrder(const Product& product, int quantity)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: If product already in orderDetails[], add to its quantity; else append a new OrderDetail (max MAX_ITEMS).
-    return false;
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    if (quantity <= 0)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < detailCount; i++)
+    {
+        if (orderDetails[i].getProductId() == product.getProductId())
+        {
+            orderDetails[i].setQuantity(orderDetails[i].getQuantity() + quantity);
+            return true;
+        }
+    }
+    if (detailCount >= MAX_ITEMS)
+    {
+        return false;
+    }
+
+    orderDetails[detailCount] = OrderDetail(currentOrder.getOrderId(), product.getProductId(), product.getBarcode(), quantity);
+    detailCount++;
+    return true;
+    
 }
 
 bool OrderManager::removeProductFromOrder(int productId)
