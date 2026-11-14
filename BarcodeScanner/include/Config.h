@@ -1,8 +1,6 @@
 /*
  * File    : Config.h
  * Purpose : Shared constants (array sizes) used by all classes.
- * Why     : We use fixed-size arrays instead of vectors, so every member
- *           must agree on the maximum sizes.
  */
 #ifndef CONFIG_H
 #define CONFIG_H

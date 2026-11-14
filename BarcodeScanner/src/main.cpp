@@ -1,9 +1,12 @@
 
 #include <iostream>
 
+void runMember2Tests();
+
 int main()
 {
     std::cout << "=== Barcode Reader and Scanner ===\n";
+    runMember2Tests();
     return 0;
 }
 
