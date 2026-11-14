@@ -90,10 +90,19 @@ bool OrderManager::updateProductQuantity(int productId, int newQuantity)
 
 double OrderManager::calculateOrderSubtotal(const ProductManager& productManager) const
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Sum of (unitPrice * quantity) for every item. Use productManager to get the price by productId.
-    return 0.0;
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    double total = 0.0;
+    for (int i = 0; i < detailCount; i++)
+    {
+        for (int j = 0; j < productManager.getProductCount(); j++)
+        {
+            if (productManager.getProducts()[j].getProductId() == orderDetails[i].getProductId())
+            {
+                total = total + productManager.getProducts()[j].getUnitPrice() * orderDetails[i].getQuantity();
+            }
+        }
+    }
+    return total;
 }
 
 bool OrderManager::validateOrder(const ProductManager& productManager) const
