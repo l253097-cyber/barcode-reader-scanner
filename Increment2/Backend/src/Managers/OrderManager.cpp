@@ -107,8 +107,33 @@ double OrderManager::calculateOrderSubtotal(const ProductManager& productManager
 
 bool OrderManager::validateOrder(const ProductManager& productManager) const
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Return false if order is empty, customer name is empty, or any item quantity is more than stock.
-    return false;
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    if (currentOrder.getCustomerName() == "")
+    {
+        return false;
+    }
+    if (detailCount == 0)
+    {
+        return false;
+    }
+    for (int i = 0; i < detailCount; i++)
+    {
+        bool found = false;
+        for (int j = 0; j < productManager.getProductCount(); j++)
+        {
+            if (productManager.getProducts()[j].getProductId() == orderDetails[i].getProductId())
+            {
+                found = true;
+                if (orderDetails[i].getQuantity() > productManager.getProducts()[j].getAvailableQuantity())
+                {
+                    return false;   
+                }
+            }
+        }
+        if (found == false)
+        {
+            return false;  
+        }
+    }
+    return true;
 }
