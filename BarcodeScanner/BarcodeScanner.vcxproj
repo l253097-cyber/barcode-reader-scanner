@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Increment2\Backend\src\Managers\BillManager.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Managers\PaymentManager.cpp" />
     <ClCompile Include="Increment2\Backend\src\Models\Bill.cpp" />
     <ClCompile Include="src\BarcodeDecoder.cpp" />
     <ClCompile Include="src\BarcodeEncoder.cpp" />
@@ -40,6 +41,7 @@
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputValidator.h" />
     <ClInclude Include="Increment2\Backend\include\Managers\BillManager.h" />
+    <ClInclude Include="Increment2\Backend\include\Managers\PaymentManager.h" />
     <ClInclude Include="Increment2\Backend\include\Models\Bill.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

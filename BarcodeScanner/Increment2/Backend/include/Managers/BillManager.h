@@ -29,11 +29,11 @@ public:
     const Bill& getCurrentBill() const { return currentBill; }
 
     // ---------- ASSIGNED FUNCTIONS (declared here, written in the .cpp) ----------
-    double calculateSubtotal(const OrderDetail* items, int count, const ProductManager& pm) const;   // Member 3
-    double calculateTotalDiscount(const OrderDetail* items, int count, const ProductManager& pm) const;   // Member 3
-    double calculateTotalTax(const OrderDetail* items, int count, const ProductManager& pm) const;   // Member 3
+    double calculateSubtotal(const OrderDetail* items, int count,ProductManager& pm) const;   // Member 3
+    double calculateTotalDiscount(const OrderDetail* items, int count,ProductManager& pm) const;   // Member 3
+    double calculateTotalTax(const OrderDetail* items, int count, ProductManager& pm) const;   // Member 3
     double calculatePayableAmount(double subtotal, double totalTax, double totalDiscount) const;   // Member 3
-    Bill generateBill(const Order& order, const OrderDetail* items, int count, const ProductManager& pm);   // Member 3
+    Bill generateBill(const Order& order, const OrderDetail* items, int count, ProductManager& pm);   // Member 3
 };
 
 #endif // BILLMANAGER_H
