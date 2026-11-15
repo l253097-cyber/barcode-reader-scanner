@@ -7,8 +7,7 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Multimedia MultimediaWidgets)
 
-# ---- Increment 1 files are REUSED from ../Increment1 (not copied) ----
-# TODO (Member 5): check these file names match your Increment1 folder exactly.
+# ---- Increment 1 files (purana kaam, reuse) ----
 set(INC1_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeDecoder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeEncoder.cpp
@@ -17,26 +16,31 @@ set(INC1_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BMPFileHandler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/InputValidator.cpp)
 set(INC1_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/include)
+
+# ---- Increment 2 ki saari .cpp files khud dhundo ----
+file(GLOB_RECURSE BACKEND_SRC CONFIGURE_DEPENDS
+     ${CMAKE_CURRENT_SOURCE_DIR}/Backend/src/*.cpp)
+file(GLOB_RECURSE GUI_SRC CONFIGURE_DEPENDS
+     ${CMAKE_CURRENT_SOURCE_DIR}/GUI/src/*.cpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/*.h)
+
 # ---- Backend library ----
 add_library(pos_backend STATIC ${BACKEND_SRC} ${INC1_SRC})
-target_include_directories(pos_backend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Backend/include ${INC1_DIR})
-target_compile_definitions(pos_backend PUBLIC POS_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Data/")
+target_include_directories(pos_backend PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Backend/include
+    ${INC1_DIR})
+target_compile_definitions(pos_backend PUBLIC
+    POS_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Data/")
 target_link_libraries(pos_backend PUBLIC Qt6::Core Qt6::Gui Qt6::Multimedia)
 
 # ---- GUI application ----
 add_executable(POSApp main.cpp ${GUI_SRC})
-target_include_directories(POSApp PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/MainWindow
-    ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/ScanScreen
-    ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/OrderScreen
-    ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/ProductDescriptionScreen
-    ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/BillScreen)
+target_include_directories(POSApp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include)
 target_link_libraries(POSApp PRIVATE pos_backend Qt6::Widgets Qt6::MultimediaWidgets)
 
-# ---- Backend unit tests (one executable per test file) ----
+# ---- Backend tests (har test file ka apna .exe) ----
 enable_testing()
-file(GLOB TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Tests/Backend/*.cpp)
+file(GLOB TEST_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Tests/Backend/*.cpp)
 foreach(test_file ${TEST_SRC})
     get_filename_component(test_name ${test_file} NAME_WE)
     add_executable(${test_name} ${test_file})
