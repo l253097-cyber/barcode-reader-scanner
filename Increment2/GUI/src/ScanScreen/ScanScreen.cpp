@@ -19,9 +19,20 @@ void ScanScreen::setupScanScreen()
 
 void ScanScreen::startCameraPreview()
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: controller->getCameraHandler()->initializeCamera() then captureSession->setVideoOutput(cameraPreview).
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    CameraHandler* camera = controller->getCameraHandler();
+    if (camera == nullptr)
+    {
+        displayScanError("Camera handler not available");
+        return;
+    }
+
+    if (camera->initializeCamera() == false)
+    {
+        displayScanError("No camera found");
+        return;
+    }
+    camera->getCaptureSession()->setVideoOutput(cameraPreview);
 }
 
 void ScanScreen::handleCaptureButton()
