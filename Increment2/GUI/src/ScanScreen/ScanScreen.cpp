@@ -1,22 +1,11 @@
 #include "ScanScreen/ScanScreen.h"
-
-/*
- * ============================================================
- *  ScanScreen
- *  Scan screen: camera preview, capture button, scan result.
- * ------------------------------------------------------------
- *  WHO WRITES WHAT (function ownership):
- *    Member 2 : setupScanScreen(), startCameraPreview(), handleCaptureButton(), displayScanResult(), displayScanError() [EXTRA]
- *  Pre-written (getters/constructors): already done, don't touch.
- *  Rule: only edit the function bodies marked with YOUR member number.
- * ============================================================
- */
+#include <QVBoxLayout>
+#include <QMediaCaptureSession>
+#include "Camera/CameraHandler.h"
 
 void ScanScreen::setupScanScreen()
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Create QVideoWidget, capture button, result label; layout; connect captureButton->clicked to handleCaptureButton.
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2  =====
 }
 
 void ScanScreen::startCameraPreview()
