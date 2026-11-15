@@ -83,8 +83,14 @@ std::string ProductManager::getProductDescription(const std::string& barcode) co
 bool ProductManager::checkAvailableQuantity(int productId, int quantity) const
 {
     // ===== MEMBER 1 : START =====
-    // TODO: True only if product exists and availableQuantity >= quantity.
-    return false;
+    //True only if product exists and availableQuantity >= quantity.
+    int i = indexOfId(products, productCount, productId);
+
+    // Unknown product, or a zero/negative amount, can never be sold
+    if (i < 0 || quantity <= 0)
+        return false;
+
+    return products[i].getAvailableQuantity() >= quantity;
     // ===== MEMBER 1 : END =====
 }
 
