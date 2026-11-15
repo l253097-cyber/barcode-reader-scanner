@@ -54,9 +54,10 @@ void ScanScreen::handleCaptureButton()
 
 void ScanScreen::displayScanResult(const QString& barcode, const QString& message)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Show barcode + product info in scanResultLabel.
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2  =====
+    scanResultLabel->setStyleSheet("color: green;");
+    scanResultLabel->setText("Barcode: " + barcode + "\n" + message);
+
 }
 
 void ScanScreen::displayScanError(const QString& errorMessage)
