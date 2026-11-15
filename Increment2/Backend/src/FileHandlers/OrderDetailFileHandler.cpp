@@ -1,24 +1,29 @@
 #include "FileHandlers/OrderDetailFileHandler.h"
+#include <fstream>
 
-/*
- * ============================================================
- *  OrderDetailFileHandler
- *  Reads/writes OrderDetail.txt. Record format (one per line, '|' separated): orderId|productId|productBarcode|quantity
- * ------------------------------------------------------------
- *  WHO WRITES WHAT (function ownership):
- *    Member 2 : loadOrderDetails(), parseOrderDetailRecord(), serializeOrderDetailRecord()
- *    Member 5 : saveOrderDetails()
- *  Pre-written (getters/constructors): already done, don't touch.
- *  Rule: only edit the function bodies marked with YOUR member number.
- * ============================================================
- */
+static bool toInt(const std::string& text, int& result)
+{
+    if (text == "")
+    {
+        return false;
+    }
+    int value = 0;
+    for (int i = 0; i < (int)text.length(); i++)
+    {
+        if (text[i] < '0' || text[i] > '9')
+        {
+            return false;   
+        }
+        value = value * 10 + (text[i] - '0');
+    }
+    result = value;
+    return true;
+}
 
 bool OrderDetailFileHandler::saveOrderDetails(const OrderDetail* items, int count) const
 {
-    // ===== MEMBER 5 : START =====
-    // TODO: Append every item using serializeOrderDetailRecord().
-    return false;
-    // ===== MEMBER 5 : END =====
+    // ===== MEMBER 5 =====
+
 }
 
 int OrderDetailFileHandler::loadOrderDetails(OrderDetail* outItems, int maxCount) const
