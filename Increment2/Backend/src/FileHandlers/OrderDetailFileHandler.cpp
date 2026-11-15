@@ -34,18 +34,16 @@ int OrderDetailFileHandler::loadOrderDetails(OrderDetail* outItems, int maxCount
     // ===== MEMBER 2 : END =====
 }
 
-bool OrderDetailFileHandler::parseOrderDetailRecord(const std::string& line, OrderDetail& outItem) const
+//bool OrderDetailFileHandler::parseOrderDetailRecord(const std::string& line, OrderDetail& outItem) const
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Split by '|' and fill outItem.
-    return false;
-    // ===== MEMBER 2 : END =====
+
 }
 
 std::string OrderDetailFileHandler::serializeOrderDetailRecord(const OrderDetail& item) const
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Join the 4 fields with '|'.
-    return "";
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    //record format: orderId|productId|productBarcode|quantity
+        
+    return item.getOrderId() + "|" + std::to_string(item.getProductId()) +
+        "|" + item.getProductBarcode() + "|" + std::to_string(item.getQuantity());
 }
