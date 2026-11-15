@@ -15,7 +15,11 @@
 bool Product::updateStock(int quantitySold)
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Reduce availableQuantity by quantitySold. Return false (and change nothing) if quantitySold <= 0 or more than available.
-    return false;
+    //Reduce availableQuantity by quantitySold. Return false (and change nothing) if quantitySold <= 0 or more than available.
+    if (quantitySold <= 0 || quantitySold > availableQuantity)
+        return false;               // nothing changes on a bad request
+
+    availableQuantity -= quantitySold;
+    return true;
     // ===== MEMBER 1 : END =====
 }
