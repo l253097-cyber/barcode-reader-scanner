@@ -16,23 +16,37 @@ double BillManager::calculateSubtotal(const OrderDetail* items, int count, const
 {
     // ===== MEMBER 3 : START =====
     // TODO: Sum of unitPrice * quantity.
-    return 0.0;
+    double subtotal = 0.0;
+    for (int i = 0; i < count; i++)
+    {
+        Product* p = pm.findProductByBarcode(items[i].getProductBarcode());   // CHECK 1
+        if (p == nullptr)
+            continue;                       // unknown product: skip it
+        subtotal += p->getUnitPrice() * items[i].getQuantity();
+    }
+    return subtotal;
     // ===== MEMBER 3 : END =====
 }
 
 double BillManager::calculateTotalDiscount(const OrderDetail* items, int count, const ProductManager& pm) const
 {
     // ===== MEMBER 3 : START =====
-    // TODO: Sum of discount (per unit) * quantity.
-    return 0.0;
+    double totalDiscount = 0.0;
+    for (int i = 0; i < count; i++)
+    {
+        const Product* p = pm.findProductByBarcode(items[i].getProductBarcode());
+        if (p == nullptr)
+            continue;
+        totalDiscount += p->getDiscount() * items[i].getQuantity();   // discount is per unit
+    }
+    return totalDiscount;
     // ===== MEMBER 3 : END =====
 }
 
 double BillManager::calculateTotalTax(const OrderDetail* items, int count, const ProductManager& pm) const
 {
     // ===== MEMBER 3 : START =====
-    // TODO: Tax of each item (tax % of price after discount) * quantity, summed.
-    return 0.0;
+    
     // ===== MEMBER 3 : END =====
 }
 
@@ -40,7 +54,7 @@ double BillManager::calculatePayableAmount(double subtotal, double totalTax, dou
 {
     // ===== MEMBER 3 : START =====
     // TODO: subtotal - totalDiscount + totalTax.
-    return 0.0;
+  
     // ===== MEMBER 3 : END =====
 }
 

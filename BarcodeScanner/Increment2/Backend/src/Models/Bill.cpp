@@ -11,7 +11,6 @@
  *  Rule: only edit the function bodies marked with YOUR member number.
  * ============================================================
  */
-
 void Bill::setPaymentStatus(const std::string& status)
 {
     // ===== MEMBER 3 : START =====

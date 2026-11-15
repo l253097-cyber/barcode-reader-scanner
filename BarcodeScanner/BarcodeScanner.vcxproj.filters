@@ -42,6 +42,9 @@
     <ClCompile Include="Increment2\Backend\src\Models\Bill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Managers\BillManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BarcodeDecoder.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Increment2\Backend\include\Models\Bill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Increment2\Backend\include\Managers\BillManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
