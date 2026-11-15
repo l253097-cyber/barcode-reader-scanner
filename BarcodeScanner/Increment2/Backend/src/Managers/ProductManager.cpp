@@ -23,6 +23,17 @@ static int indexOfBarcode(const Product* list, int count, const std::string& bar
     }
     return -1;
 }
+// Member 1 helper (file-local): position of a product id in the list, or -1.
+static int indexOfId(const Product* list, int count, int productId)
+{
+    for (int i = 0; i < count; ++i)
+    {
+        if (list[i].getProductId() == productId)
+            return i;
+    }
+    return -1;
+}
+//------------------------------
 
 Product* ProductManager::findProductByBarcode(const std::string& barcode)
 {
@@ -36,8 +47,9 @@ Product* ProductManager::findProductByBarcode(const std::string& barcode)
 Product* ProductManager::findProductById(int productId)
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Same as above but compare productId.
-    return nullptr;
+    //Same as above but compare productId.
+    int i = indexOfId(products, productCount, productId);
+    return (i >= 0) ? &products[i] : nullptr;
     // ===== MEMBER 1 : END =====
 }
 
