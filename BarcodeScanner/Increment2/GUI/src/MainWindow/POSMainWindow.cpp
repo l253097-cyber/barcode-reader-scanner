@@ -102,7 +102,12 @@ void POSMainWindow::navigateToScreen(int screenIndex)
 void POSMainWindow::handleScanNavigation()
 {
     // ===== MEMBER 1 : START =====
-    // TODO: navigateToScreen(SCAN) and call scanScreen->startCameraPreview().
+    //navigateToScreen(SCAN) and call scanScreen->startCameraPreview().
+    navigateToScreen(SCAN);
+
+    // The camera preview only runs while the Scan screen is shown
+    if (scanScreen != nullptr)
+        scanScreen->startCameraPreview();
     // ===== MEMBER 1 : END =====
 }
 
