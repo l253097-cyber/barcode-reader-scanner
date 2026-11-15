@@ -45,5 +45,10 @@ void PaymentManager::updateOrderPaymentStatus(Order& order, Bill& bill)
 {
     // ===== MEMBER 3 : START =====
     // TODO: order.setPaymentDetails(...), order.setOrderStatus("Paid"), bill.setPaymentStatus("Paid").
+    if (paymentAmount <= 0.0)                // nothing was paid yet
+        return;
+    order.setPaymentDetails(paymentAmount, paymentMode, paymentMerchant);
+    order.setOrderStatus("Paid");            // CHECK 5
+    bill.setPaymentStatus("Paid");
     // ===== MEMBER 3 : END =====
 }
