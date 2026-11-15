@@ -47,8 +47,10 @@ bool CameraHandler::initializeCamera()
 bool CameraHandler::checkCameraStatus() const
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Return true if camera exists and is active.
-    return false;
+    //Return true if camera exists and is active.
+        // The camera starts in the background, so this can be false for a moment
+    // right after initializeCamera().
+    return camera != nullptr && camera->isActive() && camera->error() == QCamera::NoError;
     // ===== MEMBER 1 : END =====
 }
 
