@@ -82,14 +82,20 @@ void POSMainWindow::setupMainWindow()
 void POSMainWindow::showDashboard()
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Show the dashboard page (index DASHBOARD).
+    //Show the dashboard page (index DASHBOARD).
+    navigateToScreen(DASHBOARD);
     // ===== MEMBER 1 : END =====
 }
 
 void POSMainWindow::navigateToScreen(int screenIndex)
 {
     // ===== MEMBER 1 : START =====
-    // TODO: screens->setCurrentIndex(screenIndex) after checking the range.
+    //screens->setCurrentIndex(screenIndex) after checking the range.
+        // Ignore an index that has no screen behind it
+    if (screens == nullptr || screenIndex < 0 || screenIndex >= screens->count())
+        return;
+
+    screens->setCurrentIndex(screenIndex);
     // ===== MEMBER 1 : END =====
 }
 
