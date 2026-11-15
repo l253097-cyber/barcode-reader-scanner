@@ -23,7 +23,7 @@ static bool toInt(const std::string& text, int& result)
 bool OrderDetailFileHandler::saveOrderDetails(const OrderDetail* items, int count) const
 {
     // ===== MEMBER 5 =====
-
+    return 0;
 }
 
 int OrderDetailFileHandler::loadOrderDetails(OrderDetail* outItems, int maxCount) const
