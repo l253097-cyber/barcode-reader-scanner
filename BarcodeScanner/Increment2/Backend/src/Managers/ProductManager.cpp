@@ -1,5 +1,6 @@
 #include "Managers/ProductManager.h"
-
+#include <iomanip>
+#include <sstream>
 /*
  * ============================================================
  *  ProductManager
@@ -56,8 +57,26 @@ Product* ProductManager::findProductById(int productId)
 std::string ProductManager::getProductDescription(const std::string& barcode) const
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Return text: name, unit, price, tax, discount, stock. Return "Product not found" if barcode is unknown.
-    return "";
+    //Return text: name, unit, price, tax, discount, stock. Return "Product not found" if barcode is unknown.
+    int i = indexOfBarcode(products, productCount, barcode);
+    if (i < 0)
+        return "Product not found";
+
+    const Product& p = products[i];
+
+    // Money with exactly 2 decimal places
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(2);
+    out << "Product ID : " << p.getProductId() << "\n"
+        << "Barcode    : " << p.getBarcode() << "\n"
+        << "Acronym    : " << p.getAcronym() << "\n"
+        << "Name       : " << p.getProductName() << "\n"
+        << "Unit       : " << p.getMeasurementUnit() << "\n"
+        << "Unit price : PKR " << p.getUnitPrice() << "\n"
+        << "Tax        : PKR " << p.getTax() << "\n"
+        << "Discount   : PKR " << p.getDiscount() << "\n"
+        << "In stock   : " << p.getAvailableQuantity();
+    return out.str();
     // ===== MEMBER 1 : END =====
 }
 
