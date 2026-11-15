@@ -5,7 +5,16 @@
 
 void ScanScreen::setupScanScreen()
 {
-    // ===== MEMBER 2  =====
+    cameraPreview = new QVideoWidget(this);
+    cameraPreview->setMinimumSize(480, 360);
+    captureButton = new QPushButton("Capture", this);
+    scanResultLabel = new QLabel("Scan result will appear here", this);
+    scanResultLabel->setWordWrap(true);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(cameraPreview);
+    layout->addWidget(captureButton);
+    layout->addWidget(scanResultLabel);
+    connect(captureButton, &QPushButton::clicked, this, &ScanScreen::handleCaptureButton);
 }
 
 void ScanScreen::startCameraPreview()
