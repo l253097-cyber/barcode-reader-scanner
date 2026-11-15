@@ -6,8 +6,10 @@
 int main()
 {
     BillManager obj;   // object must be constructible
-    (void)obj;
-
+   
+    assert(obj.calculatePayableAmount(1000, 90, 100) == 990);   // 1000 - 100 + 90
+    assert(obj.calculatePayableAmount(100, 0, 150) == 0);       // never below zero
+    std::cout << "BillManager OK\n";
     // MEMBER 3: write tests for calculateSubtotal(), calculateTotalDiscount(), calculateTotalTax(), calculatePayableAmount(), generateBill()
     // Example: assert(obj.someFunction(...) == expectedValue);
 

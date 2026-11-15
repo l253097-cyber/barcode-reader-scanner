@@ -6,8 +6,7 @@
 int main()
 {
     BillFileHandler obj;   // object must be constructible
-    (void)obj;
-
+    
     // MEMBER 3: write tests for loadBills(), parseBillRecord(), serializeBillRecord()
     // MEMBER 5: write tests for saveBill()
     // Example: assert(obj.someFunction(...) == expectedValue);

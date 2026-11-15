@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\BarcodeDecoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,6 +43,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Increment2\Backend\src\Managers\PaymentManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Managers\ProductManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Models\Order.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Managers\OrderDetailManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Managers\OrderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Models\OrderDetail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\Models\Product.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Tests\Backend\TestPaymentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Increment2\Backend\include\Managers\PaymentManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Increment2\Backend\include\FileHandlers\BillFileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
