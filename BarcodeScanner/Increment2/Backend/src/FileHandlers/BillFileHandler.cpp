@@ -1,5 +1,8 @@
 #include "FileHandlers/BillFileHandler.h"
-
+#include <fstream>
+#include <sstream>
+#include <iomanip>
+#include <string>
 /*
  * ============================================================
  *  BillFileHandler
@@ -28,7 +31,7 @@ int BillFileHandler::loadBills(Bill* outBills, int maxCount) const
     if (outBills == nullptr || maxCount <= 0)
         return 0;
 
-    std::ifstream file(filePath);                    // CHECK: name of the file path variable
+    std::ifstream file(fileName);                    // CHECK: name of the file path variable
     if (!file.is_open())
         return 0;
 

@@ -63,7 +63,10 @@
     <ClCompile Include="Increment2\Backend\src\Models\Product.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Increment2\Tests\Backend\TestPaymentManager.cpp">
+    <ClCompile Include="Increment2\Tests\Backend\TestBillFileHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Increment2\Backend\src\FileHandlers\BillFileHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

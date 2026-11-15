@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Increment2\Backend\src\FileHandlers\BillFileHandler.cpp" />
     <ClCompile Include="Increment2\Backend\src\Managers\BillManager.cpp" />
     <ClCompile Include="Increment2\Backend\src\Managers\OrderDetailManager.cpp" />
     <ClCompile Include="Increment2\Backend\src\Managers\OrderManager.cpp" />
@@ -28,7 +29,7 @@
     <ClCompile Include="Increment2\Backend\src\Models\Order.cpp" />
     <ClCompile Include="Increment2\Backend\src\Models\OrderDetail.cpp" />
     <ClCompile Include="Increment2\Backend\src\Models\Product.cpp" />
-    <ClCompile Include="Increment2\Tests\Backend\TestPaymentManager.cpp" />
+    <ClCompile Include="Increment2\Tests\Backend\TestBillFileHandler.cpp" />
     <ClCompile Include="src\BarcodeDecoder.cpp" />
     <ClCompile Include="src\BarcodeEncoder.cpp" />
     <ClCompile Include="src\BMPFileHandler.cpp" />
