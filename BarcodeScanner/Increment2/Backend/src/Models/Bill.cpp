@@ -16,5 +16,7 @@ void Bill::setPaymentStatus(const std::string& status)
 {
     // ===== MEMBER 3 : START =====
     // TODO: Set paymentStatus to "Paid" or "Unpaid".
+    if (status == "Paid" || status == "Unpaid")
+        paymentStatus = status;
     // ===== MEMBER 3 : END =====
 }

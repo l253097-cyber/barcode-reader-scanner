@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Increment2\Backend\src\Models\Bill.cpp" />
     <ClCompile Include="src\BarcodeDecoder.cpp" />
     <ClCompile Include="src\BarcodeEncoder.cpp" />
     <ClCompile Include="src\BMPFileHandler.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="include\BMPFileHandler.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputValidator.h" />
+    <ClInclude Include="Increment2\Backend\include\Models\Bill.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -133,7 +135,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Increment2\Backend\include;$(ProjectDir)Increment2\Backend\include\Common;$(ProjectDir)Increment2\Backend\include\Managers;$(ProjectDir)Increment2\Backend\include\Models</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
