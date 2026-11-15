@@ -12,11 +12,24 @@
  * ============================================================
  */
 
+ // Member 1 helper (file-local): position of a barcode in the list, or -1.
+ // The search loop lives here once, so the find/description/check functions share it.
+static int indexOfBarcode(const Product* list, int count, const std::string& barcode)
+{
+    for (int i = 0; i < count; ++i)
+    {
+        if (list[i].getBarcode() == barcode)
+            return i;
+    }
+    return -1;
+}
+
 Product* ProductManager::findProductByBarcode(const std::string& barcode)
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Loop over products[], return pointer to the match, else nullptr.
-    return nullptr;
+    //Loop over products[], return pointer to the match, else nullptr.
+    int i = indexOfBarcode(products, productCount, barcode);
+    return (i >= 0) ? &products[i] : nullptr;
     // ===== MEMBER 1 : END =====
 }
 
