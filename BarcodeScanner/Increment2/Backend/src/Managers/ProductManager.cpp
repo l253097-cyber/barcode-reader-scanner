@@ -97,7 +97,11 @@ bool ProductManager::checkAvailableQuantity(int productId, int quantity) const
 bool ProductManager::deductStock(int productId, int quantity)
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Find product and call product->updateStock(quantity). Return its result.
-    return false;
+    //Find product and call product->updateStock(quantity). Return its result.
+    Product* product = findProductById(productId);
+    if (product == nullptr)
+        return false;
+
+    return product->updateStock(quantity);   // refuses bad or too-large amounts
     // ===== MEMBER 1 : END =====
 }
