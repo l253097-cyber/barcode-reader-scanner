@@ -1,5 +1,6 @@
 #include "Camera/CameraHandler.h"
-
+#include <QCameraDevice>
+#include <QMediaDevices>
 /*
  * ============================================================
  *  CameraHandler
@@ -16,8 +17,30 @@
 bool CameraHandler::initializeCamera()
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Create QCamera, QMediaCaptureSession, QImageCapture; link them; camera->start(). Set cameraAvailable.
-    return false;
+    //Create QCamera, QMediaCaptureSession, QImageCapture; link them; camera->start(). Set cameraAvailable.
+        // Calling it twice must not open a second camera
+    if (camera != nullptr)
+        return true;
+
+    // Ask Windows for the default camera (the laptop webcam)
+    const QCameraDevice device = QMediaDevices::defaultVideoInput();
+    if (device.isNull())
+    {
+        cameraAvailable = false;
+        return false;
+    }
+
+    // The session connects the camera to the preview and to image capture
+    camera = new QCamera(device);
+    captureSession = new QMediaCaptureSession;
+    imageCapture = new QImageCapture;
+
+    captureSession->setCamera(camera);
+    captureSession->setImageCapture(imageCapture);
+    camera->start();
+
+    cameraAvailable = true;
+    return true;
     // ===== MEMBER 1 : END =====
 }
 
