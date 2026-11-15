@@ -114,13 +114,15 @@ void POSMainWindow::handleScanNavigation()
 void POSMainWindow::handleOrderNavigation()
 {
     // ===== MEMBER 1 (EXTRA - not in the official final list) : START =====
-    // TODO: navigateToScreen(ORDER).
+   
+    navigateToScreen(ORDER);
     // ===== MEMBER 1 (EXTRA - not in the official final list) : END =====
 }
 
 void POSMainWindow::handleBillNavigation()
 {
     // ===== MEMBER 1 (EXTRA - not in the official final list) : START =====
-    // TODO: navigateToScreen(BILL).
+    
+    navigateToScreen(BILL);
     // ===== MEMBER 1 (EXTRA - not in the official final list) : END =====
 }
