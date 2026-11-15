@@ -10,14 +10,13 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Multimedia MultimediaWidgets)
 # ---- Increment 1 files are REUSED from ../Increment1 (not copied) ----
 # TODO (Member 5): check these file names match your Increment1 folder exactly.
 set(INC1_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeScanner.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeDecoder.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BMPFileHandler.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeEncoder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeRenderer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BarcodeScanner.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/BMPFileHandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/src/InputValidator.cpp)
 set(INC1_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../BarcodeScanner/include)
-file(GLOB_RECURSE BACKEND_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Backend/src/*.cpp)
-file(GLOB_RECURSE GUI_SRC ${CMAKE_CURRENT_SOURCE_DIR}/GUI/src/*.cpp
-                          ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/*.h)
-
 # ---- Backend library ----
 add_library(pos_backend STATIC ${BACKEND_SRC} ${INC1_SRC})
 target_include_directories(pos_backend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Backend/include ${INC1_DIR})
