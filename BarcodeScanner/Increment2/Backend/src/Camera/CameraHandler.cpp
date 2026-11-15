@@ -57,7 +57,21 @@ bool CameraHandler::checkCameraStatus() const
 void CameraHandler::releaseCamera()
 {
     // ===== MEMBER 1 : START =====
-    // TODO: Stop camera, delete the 3 Qt objects, set pointers to nullptr (safe to call twice).
+    //Stop camera, delete the 3 Qt objects, set pointers to nullptr (safe to call twice).
+    if (camera != nullptr)
+        camera->stop();
+
+    // Unlink the pieces first, then delete them, so nothing points at a deleted object
+    if (captureSession != nullptr)
+    {
+        captureSession->setCamera(nullptr);
+        captureSession->setImageCapture(nullptr);
+    }
+
+    delete imageCapture;    imageCapture = nullptr;
+    delete captureSession;  captureSession = nullptr;
+    delete camera;          camera = nullptr;
+    cameraAvailable = false;   // safe to call twice: deleting nullptr does nothing
     // ===== MEMBER 1 : END =====
 }
 
