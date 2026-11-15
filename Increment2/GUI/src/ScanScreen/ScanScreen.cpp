@@ -62,7 +62,7 @@ void ScanScreen::displayScanResult(const QString& barcode, const QString& messag
 
 void ScanScreen::displayScanError(const QString& errorMessage)
 {
-    // ===== MEMBER 2 (EXTRA - not in the official final list) : START =====
-    // TODO: Show errorMessage (e.g. in red) in scanResultLabel.
-    // ===== MEMBER 2 (EXTRA - not in the official final list) : END =====
+    // ===== MEMBER 2 =====
+    scanResultLabel->setStyleSheet("color: red;");
+    scanResultLabel->setText("Error: " + errorMessage);
 }
