@@ -28,10 +28,37 @@ bool OrderDetailFileHandler::saveOrderDetails(const OrderDetail* items, int coun
 
 int OrderDetailFileHandler::loadOrderDetails(OrderDetail* outItems, int maxCount) const
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Read file, parseOrderDetailRecord() each line, return count.
-    return 0;
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    std::ifstream file(fileName.c_str());
+    if (file.is_open() == false)
+    {
+        return 0;   
+    }
+
+    int count = 0;
+    std::string line;
+    while (count < maxCount && std::getline(file, line))
+    {
+        if (line.length() > 0 && line[line.length() - 1] == '\r')
+        {
+            line = line.substr(0, line.length() - 1);
+        }
+
+        if (line == "")
+        {
+            continue;
+        }
+
+        OrderDetail item;
+        if (parseOrderDetailRecord(line, item))
+        {
+            outItems[count] = item;
+            count++;
+        }
+    }
+
+    file.close();
+    return count;
 }
 
 bool OrderDetailFileHandler::parseOrderDetailRecord(const std::string& line, OrderDetail& outItem) const
