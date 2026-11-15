@@ -37,9 +37,19 @@ void ScanScreen::startCameraPreview()
 
 void ScanScreen::handleCaptureButton()
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Call controller->handleBarcodeScan(barcode, msg); show with displayScanResult() or displayScanError().
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2  =====
+    std::string barcode = "";
+    std::string message = "";
+
+    bool ok = controller->handleBarcodeScan(barcode, message);
+    if (ok)
+    {
+        displayScanResult(QString::fromStdString(barcode), QString::fromStdString(message));
+    }
+    else
+    {
+        displayScanError(QString::fromStdString(message));
+    }
 }
 
 void ScanScreen::displayScanResult(const QString& barcode, const QString& message)
