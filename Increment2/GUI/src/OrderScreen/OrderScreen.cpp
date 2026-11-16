@@ -1,4 +1,10 @@
 #include "OrderScreen/OrderScreen.h"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QFormLayout>
+#include <QHeaderView>
+#include <QIntValidator>
+#include <QMessageBox>
 
 /*
  * ============================================================
@@ -16,7 +22,6 @@
 void OrderScreen::setupOrderScreen()
 {
     // ===== MEMBER 3 : START =====
-    // ---- setupOrderScreen ----
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
 
     QLabel* title = new QLabel("Order");
@@ -74,21 +79,23 @@ void OrderScreen::setupOrderScreen()
 void OrderScreen::displayOrderItems(const OrderDetail* items, int count)
 {
     // ===== MEMBER 3 : START =====
-    // ---- displayOrderItems(const OrderDetail* items, int count) ----
     orderItemsTable->setRowCount(0);
+    if (items == nullptr) return;
+
     for (int i = 0; i < count; i++)
     {
         const std::string barcode = items[i].getProductBarcode();
-        const Product* p = controller->findProductByBarcode(barcode);   // CHECK 1
-        QString name = p ? QString::fromStdString(p->getProductName()) : QString("(unknown product)");
-        double lineTotal = p ? p->getUnitPrice() * items[i].getQuantity() : 0.0;
+        std::string desc = controller ? controller->handleProductDescription(barcode) : "";
+        QString productLabel = desc.empty()
+            ? QString::fromStdString(barcode)
+            : QString::fromStdString(desc);
 
         int row = orderItemsTable->rowCount();
         orderItemsTable->insertRow(row);
         orderItemsTable->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(barcode)));
-        orderItemsTable->setItem(row, 1, new QTableWidgetItem(name));
+        orderItemsTable->setItem(row, 1, new QTableWidgetItem(productLabel));
         orderItemsTable->setItem(row, 2, new QTableWidgetItem(QString::number(items[i].getQuantity())));
-        orderItemsTable->setItem(row, 3, new QTableWidgetItem(QString::number(lineTotal, 'f', 2)));
+        orderItemsTable->setItem(row, 3, new QTableWidgetItem("-"));
     }
     // ===== MEMBER 3 : END =====
 }
@@ -96,7 +103,6 @@ void OrderScreen::displayOrderItems(const OrderDetail* items, int count)
 void OrderScreen::handleAddProduct()
 {
     // ===== MEMBER 3 : START =====
-  // ---- handleAddProduct ----
     bool ok = false;
     int quantity = quantityInput->text().trimmed().toInt(&ok);
     if (!ok || quantity < 1)
@@ -105,36 +111,42 @@ void OrderScreen::handleAddProduct()
         return;
     }
 
-    const Product* product = controller->getScannedProduct();           // CHECK 1: the product the scanner found
-    if (product == nullptr)
+    QString name = customerNameInput->text().trimmed();
+    QString contact = customerContactInput->text().trimmed();
+    if (name.isEmpty())
     {
-        QMessageBox::warning(this, "Add Product", "Scan a product first.");
+        QMessageBox::warning(this, "Add Product", "Enter the customer name first.");
+        customerNameInput->setFocus();
         return;
     }
-    if (quantity > product->getAvailableQuantity())
+
+    // Grab barcode from currently selected row if any (until Member 1/5 connects ScanScreen -> OrderScreen)
+    std::string barcode = "";
+    int currentRow = orderItemsTable->currentRow();
+    if (currentRow >= 0 && orderItemsTable->item(currentRow, 0) != nullptr)
     {
-        QMessageBox::warning(this, "Add Product",
-            QString("Not enough stock. Available: %1").arg(product->getAvailableQuantity()));
+        barcode = orderItemsTable->item(currentRow, 0)->text().toStdString();
+    }
+
+    if (barcode.empty())
+    {
+        QMessageBox::warning(this, "Add Product", "Scan or select a product first.");
         return;
     }
-    if (!controller->addProductToOrder(product->getBarcode(), quantity)) // CHECK 1
+
+    if (!controller->handleOrderRecording(name.toStdString(), contact.toStdString(), barcode, quantity))
     {
         QMessageBox::warning(this, "Add Product", "Could not add this product to the order.");
         return;
     }
 
     quantityInput->setText("1");
-    OrderDetail items[100];
-    int count = controller->getOrderItems(items, 100);                  // CHECK 1
-    displayOrderItems(items, count);
     // ===== MEMBER 3 : END =====
 }
 
 void OrderScreen::handleQuantityInput(const QString& text)
 {
     // ===== MEMBER 3 : START =====
-    // TODO: Validate that text is a positive whole number; disable Add button otherwise.
-    // ---- handleQuantityInput(const QString& text) ----
     bool ok = false;
     int quantity = text.trimmed().toInt(&ok);
     bool valid = ok && quantity >= 1 && quantity <= 999;
@@ -151,7 +163,7 @@ void OrderScreen::handleDescriptionButton()
 {
     // ===== MEMBER 4 : START =====
     // TODO: Get selected row's barcode, call controller->handleProductDescription(), send result to ProductDescriptionScreen and open it.
-    
+
     // ===== MEMBER 4 : END =====
 }
 
@@ -165,8 +177,6 @@ void OrderScreen::handleRemoveProduct()
 void OrderScreen::handleGenerateBillButton()
 {
     // ===== MEMBER 3 (EXTRA - not in the official final list) : START =====
-    // TODO: Call controller->handleBillGeneration() and open the Bill screen.
-   // ---- handleGenerateBillButton (EXTRA) ----
     QString name = customerNameInput->text().trimmed();
     QString contact = customerContactInput->text().trimmed();
 
@@ -176,7 +186,7 @@ void OrderScreen::handleGenerateBillButton()
         customerNameInput->setFocus();
         return;
     }
-    for (QChar c : contact)                                             // CHECK 2: contact rule is my guess
+    for (QChar c : contact)
     {
         if (!(c.isDigit() || c == QLatin1Char('+') || c == QLatin1Char('-') || c == QLatin1Char(' ')))
         {
@@ -190,11 +200,8 @@ void OrderScreen::handleGenerateBillButton()
         QMessageBox::warning(this, "Generate Bill", "Add at least one product first.");
         return;
     }
-    if (!controller->generateBill(name.toStdString(), contact.toStdString()))   // CHECK 1
-    {
-        QMessageBox::warning(this, "Generate Bill", "Could not generate the bill.");
-        return;
-    }
-    // TODO: ask MainWindow (Member 1) to show the Bill screen. Check how navigation is done there.
+
+    Bill bill = controller->handleBillGeneration();
+    Q_UNUSED(bill);
     // ===== MEMBER 3 (EXTRA - not in the official final list) : END =====
 }
