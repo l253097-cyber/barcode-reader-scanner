@@ -16,21 +16,87 @@
 void OrderScreen::setupOrderScreen()
 {
     // ===== MEMBER 3 : START =====
-    // TODO: Create all widgets and layout, connect every button to its slot.
+    // ---- setupOrderScreen ----
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+
+    QLabel* title = new QLabel("Order");
+    title->setStyleSheet("font-size: 18px; font-weight: bold;");
+    mainLayout->addWidget(title);
+
+    // customer info
+    customerNameInput = new QLineEdit;
+    customerNameInput->setPlaceholderText("Customer name");
+    customerContactInput = new QLineEdit;
+    customerContactInput->setPlaceholderText("Customer contact (phone)");
+    QFormLayout* customerForm = new QFormLayout;
+    customerForm->addRow("Name:", customerNameInput);
+    customerForm->addRow("Contact:", customerContactInput);
+    mainLayout->addLayout(customerForm);
+
+    // order items table: column 0 holds the barcode (Member 4's remove/description use it)
+    orderItemsTable = new QTableWidget(0, 4);
+    orderItemsTable->setHorizontalHeaderLabels({ "Barcode", "Product", "Quantity", "Line Total" });
+    orderItemsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    orderItemsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    orderItemsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    orderItemsTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mainLayout->addWidget(orderItemsTable);
+
+    // quantity + buttons
+    quantityInput = new QLineEdit;
+    quantityInput->setPlaceholderText("Quantity");
+    quantityInput->setText("1");
+    quantityInput->setValidator(new QIntValidator(1, 999, this));     // only digits can be typed
+    addProductButton = new QPushButton("Add Product");
+    removeProductButton = new QPushButton("Remove Product");
+    descriptionButton = new QPushButton("Product Description");
+    generateBillButton = new QPushButton("Generate Bill");
+
+    QHBoxLayout* buttonRow = new QHBoxLayout;
+    buttonRow->addWidget(new QLabel("Qty:"));
+    buttonRow->addWidget(quantityInput);
+    buttonRow->addWidget(addProductButton);
+    buttonRow->addWidget(removeProductButton);
+    buttonRow->addWidget(descriptionButton);
+    mainLayout->addLayout(buttonRow);
+    mainLayout->addWidget(generateBillButton);
+
+    connect(quantityInput, &QLineEdit::textChanged, this, &OrderScreen::handleQuantityInput);
+    connect(addProductButton, &QPushButton::clicked, this, &OrderScreen::handleAddProduct);
+    connect(removeProductButton, &QPushButton::clicked, this, &OrderScreen::handleRemoveProduct);          // Member 4's slot
+    connect(descriptionButton, &QPushButton::clicked, this, &OrderScreen::handleDescriptionButton);        // Member 4's slot
+    connect(generateBillButton, &QPushButton::clicked, this, &OrderScreen::handleGenerateBillButton);
+
+    handleQuantityInput(quantityInput->text());                         // set the Add button's starting state
     // ===== MEMBER 3 : END =====
 }
 
 void OrderScreen::displayOrderItems(const OrderDetail* items, int count)
 {
     // ===== MEMBER 3 : START =====
-    // TODO: Fill orderItemsTable: one row per item (product, quantity).
+    // ---- displayOrderItems(const OrderDetail* items, int count) ----
+    orderItemsTable->setRowCount(0);
+    for (int i = 0; i < count; i++)
+    {
+        const std::string barcode = items[i].getProductBarcode();
+        const Product* p = controller->findProductByBarcode(barcode);   // CHECK 1
+        QString name = p ? QString::fromStdString(p->getProductName()) : QString("(unknown product)");
+        double lineTotal = p ? p->getUnitPrice() * items[i].getQuantity() : 0.0;
+
+        int row = orderItemsTable->rowCount();
+        orderItemsTable->insertRow(row);
+        orderItemsTable->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(barcode)));
+        orderItemsTable->setItem(row, 1, new QTableWidgetItem(name));
+        orderItemsTable->setItem(row, 2, new QTableWidgetItem(QString::number(items[i].getQuantity())));
+        orderItemsTable->setItem(row, 3, new QTableWidgetItem(QString::number(lineTotal, 'f', 2)));
+    }
     // ===== MEMBER 3 : END =====
 }
 
 void OrderScreen::handleAddProduct()
 {
     // ===== MEMBER 3 : START =====
-    // TODO: Read name/contact/quantity inputs, call controller->handleOrderRecording(...), refresh the table.
+  
     // ===== MEMBER 3 : END =====
 }
 
