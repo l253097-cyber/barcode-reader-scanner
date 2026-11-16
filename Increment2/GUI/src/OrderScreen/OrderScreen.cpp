@@ -96,7 +96,37 @@ void OrderScreen::displayOrderItems(const OrderDetail* items, int count)
 void OrderScreen::handleAddProduct()
 {
     // ===== MEMBER 3 : START =====
-  
+  // ---- handleAddProduct ----
+    bool ok = false;
+    int quantity = quantityInput->text().trimmed().toInt(&ok);
+    if (!ok || quantity < 1)
+    {
+        QMessageBox::warning(this, "Add Product", "Enter a quantity of 1 or more.");
+        return;
+    }
+
+    const Product* product = controller->getScannedProduct();           // CHECK 1: the product the scanner found
+    if (product == nullptr)
+    {
+        QMessageBox::warning(this, "Add Product", "Scan a product first.");
+        return;
+    }
+    if (quantity > product->getAvailableQuantity())
+    {
+        QMessageBox::warning(this, "Add Product",
+            QString("Not enough stock. Available: %1").arg(product->getAvailableQuantity()));
+        return;
+    }
+    if (!controller->addProductToOrder(product->getBarcode(), quantity)) // CHECK 1
+    {
+        QMessageBox::warning(this, "Add Product", "Could not add this product to the order.");
+        return;
+    }
+
+    quantityInput->setText("1");
+    OrderDetail items[100];
+    int count = controller->getOrderItems(items, 100);                  // CHECK 1
+    displayOrderItems(items, count);
     // ===== MEMBER 3 : END =====
 }
 
@@ -104,6 +134,16 @@ void OrderScreen::handleQuantityInput(const QString& text)
 {
     // ===== MEMBER 3 : START =====
     // TODO: Validate that text is a positive whole number; disable Add button otherwise.
+    // ---- handleQuantityInput(const QString& text) ----
+    bool ok = false;
+    int quantity = text.trimmed().toInt(&ok);
+    bool valid = ok && quantity >= 1 && quantity <= 999;
+
+    if (valid || text.isEmpty())
+        quantityInput->setStyleSheet(QString());                        // normal look
+    else
+        quantityInput->setStyleSheet("border: 1px solid red;");         // red border for a bad value
+    addProductButton->setEnabled(valid);                                // can't add with a bad quantity
     // ===== MEMBER 3 : END =====
 }
 
@@ -111,6 +151,7 @@ void OrderScreen::handleDescriptionButton()
 {
     // ===== MEMBER 4 : START =====
     // TODO: Get selected row's barcode, call controller->handleProductDescription(), send result to ProductDescriptionScreen and open it.
+    
     // ===== MEMBER 4 : END =====
 }
 
@@ -125,5 +166,35 @@ void OrderScreen::handleGenerateBillButton()
 {
     // ===== MEMBER 3 (EXTRA - not in the official final list) : START =====
     // TODO: Call controller->handleBillGeneration() and open the Bill screen.
+   // ---- handleGenerateBillButton (EXTRA) ----
+    QString name = customerNameInput->text().trimmed();
+    QString contact = customerContactInput->text().trimmed();
+
+    if (name.isEmpty())
+    {
+        QMessageBox::warning(this, "Generate Bill", "Enter the customer name.");
+        customerNameInput->setFocus();
+        return;
+    }
+    for (QChar c : contact)                                             // CHECK 2: contact rule is my guess
+    {
+        if (!(c.isDigit() || c == QLatin1Char('+') || c == QLatin1Char('-') || c == QLatin1Char(' ')))
+        {
+            QMessageBox::warning(this, "Generate Bill", "The contact may only contain digits, +, - and spaces.");
+            customerContactInput->setFocus();
+            return;
+        }
+    }
+    if (orderItemsTable->rowCount() == 0)
+    {
+        QMessageBox::warning(this, "Generate Bill", "Add at least one product first.");
+        return;
+    }
+    if (!controller->generateBill(name.toStdString(), contact.toStdString()))   // CHECK 1
+    {
+        QMessageBox::warning(this, "Generate Bill", "Could not generate the bill.");
+        return;
+    }
+    // TODO: ask MainWindow (Member 1) to show the Bill screen. Check how navigation is done there.
     // ===== MEMBER 3 (EXTRA - not in the official final list) : END =====
 }
