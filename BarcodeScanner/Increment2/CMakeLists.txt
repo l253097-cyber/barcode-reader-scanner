@@ -9,12 +9,14 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Multimedia MultimediaWidgets)
 
 # ---- Increment 1 files are REUSED from ../Increment1 (not copied) ----
 # TODO (Member 5): check these file names match your Increment1 folder exactly.
-set(INC1_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Increment1)
 set(INC1_SRC
-    ${INC1_DIR}/BarcodeScanner.cpp
-    ${INC1_DIR}/BarcodeDecoder.cpp
-    ${INC1_DIR}/BMPFileHandler.cpp)
-
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/BarcodeDecoder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/BarcodeEncoder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/BarcodeRenderer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/BarcodeScanner.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/BMPFileHandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/InputValidator.cpp)
+set(INC1_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 file(GLOB_RECURSE BACKEND_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Backend/src/*.cpp)
 file(GLOB_RECURSE GUI_SRC ${CMAKE_CURRENT_SOURCE_DIR}/GUI/src/*.cpp
                           ${CMAKE_CURRENT_SOURCE_DIR}/GUI/include/*.h)
