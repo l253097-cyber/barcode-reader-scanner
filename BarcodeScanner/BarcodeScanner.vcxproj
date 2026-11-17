@@ -19,6 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Increment2\Backend\src\FileHandlers\BillFileHandler.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Managers\BillManager.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Managers\OrderDetailManager.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Managers\OrderManager.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Managers\PaymentManager.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Managers\ProductManager.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Models\Bill.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Models\Order.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Models\OrderDetail.cpp" />
+    <ClCompile Include="Increment2\Backend\src\Models\Product.cpp" />
+    <ClCompile Include="Increment2\Tests\Backend\TestBillFileHandler.cpp" />
     <ClCompile Include="src\BarcodeDecoder.cpp" />
     <ClCompile Include="src\BarcodeEncoder.cpp" />
     <ClCompile Include="src\BMPFileHandler.cpp" />
@@ -26,7 +37,6 @@
     <ClCompile Include="src\BarcodeScanner.cpp" />
     <ClCompile Include="src\BarcodeSystem.cpp" />
     <ClCompile Include="src\BarcodeRenderer.cpp" />
-    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BarcodeDecoder.h" />
@@ -37,6 +47,10 @@
     <ClInclude Include="include\BMPFileHandler.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputValidator.h" />
+    <ClInclude Include="Increment2\Backend\include\FileHandlers\BillFileHandler.h" />
+    <ClInclude Include="Increment2\Backend\include\Managers\BillManager.h" />
+    <ClInclude Include="Increment2\Backend\include\Managers\PaymentManager.h" />
+    <ClInclude Include="Increment2\Backend\include\Models\Bill.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -133,7 +147,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Increment2\Backend\include;$(ProjectDir)Increment2\Backend\include\Models;$(ProjectDir)Increment2\Backend\include\Managers;$(ProjectDir)Increment2\Backend\include\Common;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,7 +166,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Increment2\Backend\include;$(ProjectDir)Increment2\Backend\include\Models;$(ProjectDir)Increment2\Backend\include\Managers;$(ProjectDir)Increment2\Backend\include\Common;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -11,10 +11,11 @@
  *  Rule: only edit the function bodies marked with YOUR member number.
  * ============================================================
  */
-
 void Bill::setPaymentStatus(const std::string& status)
 {
     // ===== MEMBER 3 : START =====
     // TODO: Set paymentStatus to "Paid" or "Unpaid".
+    if (status == "Paid" || status == "Unpaid")
+        paymentStatus = status;
     // ===== MEMBER 3 : END =====
 }
