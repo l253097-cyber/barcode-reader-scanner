@@ -163,6 +163,28 @@ bool POSController::handleOrderRecording(const std::string& customerName, const 
     // ===== MEMBER 5 : END =====
 }
 
+bool POSController::handleRemoveProduct(const std::string& barcode)
+{
+    if (productManager == nullptr || orderManager == nullptr)
+    {
+        return false;
+    }
+
+    if (barcode.empty())
+    {
+        return false;
+    }
+
+    Product* product = productManager->findProductByBarcode(barcode);
+
+    if (product == nullptr)
+    {
+        return false;
+    }
+
+    return orderManager->removeProductFromOrder(product->getProductId());
+}
+
 Bill POSController::handleBillGeneration()
 {
     // ===== MEMBER 5 : START =====
@@ -230,4 +252,19 @@ bool POSController::handlePayment(double amount, const std::string& mode, const 
     ok = productFileHandler->saveProducts(productManager->getProducts(),
         productManager->getProductCount()) && ok;
     return ok;
+}
+const OrderDetail* POSController::getOrderItems() const
+{
+    if (orderManager == nullptr)
+        return nullptr;
+
+    return orderManager->getOrderDetails();
+}
+
+int POSController::getOrderItemCount() const
+{
+    if (orderManager == nullptr)
+        return 0;
+
+    return orderManager->getDetailCount();
 }

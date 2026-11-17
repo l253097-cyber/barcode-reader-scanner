@@ -39,12 +39,14 @@ public:
         : productManager(pm), orderManager(om), billManager(bm), paymentManager(pay), cameraHandler(cam) {}
     CameraHandler* getCameraHandler() const { return cameraHandler; }   // for the GUI camera preview
     // Member 5 may add more small getters here when the GUI needs them (e.g. current order items).
-
+    const OrderDetail* getOrderItems() const;
+    int getOrderItemCount() const;
     // ---------- ASSIGNED FUNCTIONS (declared here, written in the .cpp) ----------
     bool handleBarcodeScan(std::string& outBarcode, std::string& outMessage);   // Member 5
     std::string handleProductDescription(const std::string& barcode) const;   // Member 5
     bool handleOrderRecording(const std::string& customerName, const std::string& customerContact, const std::string& barcode, int quantity);   // Member 5
     Bill handleBillGeneration();   // Member 5
+    bool handleRemoveProduct(const std::string& barcode);
     bool handlePayment(double amount, const std::string& mode, const std::string& merchant);   // Member 5
 };
 
