@@ -1,4 +1,4 @@
-#include "POSController/POSController.h"
+#include "POSController.h"
 
 /*
  * ============================================================

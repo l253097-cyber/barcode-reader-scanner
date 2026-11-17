@@ -28,6 +28,7 @@
     <ClCompile Include="src\BarcodeRenderer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\OrderFileHandler.cpp" />
+    <ClCompile Include="src\POSController.cpp" />
     <ClCompile Include="src\ProductFileHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +42,7 @@
     <ClInclude Include="include\InputValidator.h" />
     <ClInclude Include="include\Order.h" />
     <ClInclude Include="include\OrderFileHandler.h" />
+    <ClInclude Include="include\POSController.h" />
     <ClInclude Include="include\Product.h" />
     <ClInclude Include="include\ProductFileHandler.h" />
   </ItemGroup>

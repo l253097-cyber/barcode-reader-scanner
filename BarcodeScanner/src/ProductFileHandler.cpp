@@ -1,5 +1,6 @@
 #include "ProductFileHandler.h"
 using namespace std;
+#include<iostream>
 #include<fstream>
 /*
  * ============================================================

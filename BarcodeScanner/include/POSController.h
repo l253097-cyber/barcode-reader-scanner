@@ -1,11 +1,11 @@
 #ifndef POSCONTROLLER_H
 #define POSCONTROLLER_H
 
-#include "Managers/ProductManager.h"
-#include "Managers/OrderManager.h"
-#include "Managers/BillManager.h"
-#include "Managers/PaymentManager.h"
-#include "Camera/CameraHandler.h"
+#include "ProductManager.h"
+#include "OrderManager.h"
+#include "BillManager.h"
+#include "PaymentManager.h"
+#include "CameraHandler.h"
 #include <string>
 
 /*
