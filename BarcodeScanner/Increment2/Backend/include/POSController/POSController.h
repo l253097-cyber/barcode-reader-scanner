@@ -1,12 +1,15 @@
 #ifndef POSCONTROLLER_H
 #define POSCONTROLLER_H
-
 #include "Managers/ProductManager.h"
 #include "Managers/OrderManager.h"
 #include "Managers/BillManager.h"
 #include "Managers/PaymentManager.h"
 #include "Camera/CameraHandler.h"
+#include "FileHandlers/ProductFileHandler.h"   
+#include "FileHandlers/OrderFileHandler.h"
+#include "FileHandlers/BillFileHandler.h"
 #include <string>
+
 
 /*
  * ============================================================
@@ -27,7 +30,9 @@ private:
     BillManager* billManager = nullptr;
     PaymentManager* paymentManager = nullptr;
     CameraHandler* cameraHandler = nullptr;
-
+    ProductFileHandler* productFileHandler = nullptr;
+    OrderFileHandler* orderFileHandler = nullptr;
+    BillFileHandler* billFileHandler = nullptr;
 public:
     // ---------- PRE-WRITTEN (do not edit) ----------
     POSController(ProductManager* pm, OrderManager* om, BillManager* bm, PaymentManager* pay, CameraHandler* cam)

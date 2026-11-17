@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Increment2\Backend\src\Camera\CameraHandler.cpp" />
     <ClCompile Include="Increment2\Backend\src\FileHandlers\BillFileHandler.cpp" />
     <ClCompile Include="Increment2\Backend\src\Managers\BillManager.cpp" />
     <ClCompile Include="Increment2\Backend\src\Managers\OrderDetailManager.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Increment2\Backend\src\Models\Order.cpp" />
     <ClCompile Include="Increment2\Backend\src\Models\OrderDetail.cpp" />
     <ClCompile Include="Increment2\Backend\src\Models\Product.cpp" />
+    <ClCompile Include="Increment2\Backend\src\POSController\POSController.cpp" />
     <ClCompile Include="Increment2\Tests\Backend\TestBillFileHandler.cpp" />
     <ClCompile Include="src\BarcodeDecoder.cpp" />
     <ClCompile Include="src\BarcodeEncoder.cpp" />
@@ -47,10 +49,21 @@
     <ClInclude Include="include\BMPFileHandler.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputValidator.h" />
+    <ClInclude Include="Increment2\Backend\include\Camera\CameraHandler.h" />
     <ClInclude Include="Increment2\Backend\include\FileHandlers\BillFileHandler.h" />
+    <ClInclude Include="Increment2\Backend\include\FileHandlers\OrderDetailFileHandler.h" />
+    <ClInclude Include="Increment2\Backend\include\FileHandlers\OrderFileHandler.h" />
+    <ClInclude Include="Increment2\Backend\include\FileHandlers\ProductFileHandler.h" />
     <ClInclude Include="Increment2\Backend\include\Managers\BillManager.h" />
+    <ClInclude Include="Increment2\Backend\include\Managers\OrderDetailManager.h" />
+    <ClInclude Include="Increment2\Backend\include\Managers\OrderManager.h" />
     <ClInclude Include="Increment2\Backend\include\Managers\PaymentManager.h" />
+    <ClInclude Include="Increment2\Backend\include\Managers\ProductManager.h" />
     <ClInclude Include="Increment2\Backend\include\Models\Bill.h" />
+    <ClInclude Include="Increment2\Backend\include\Models\Order.h" />
+    <ClInclude Include="Increment2\Backend\include\Models\OrderDetail.h" />
+    <ClInclude Include="Increment2\Backend\include\Models\Product.h" />
+    <ClInclude Include="Increment2\Backend\include\POSController\POSController.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
