@@ -185,3 +185,35 @@ bool POSController::handlePayment(double amount, const std::string& mode, const 
     return true;
     // ===== MEMBER 5 : END =====
 }
+bool POSController::handleProductDetails(const std::string& barcode, Product& outProduct) const
+{
+    if (productManager == nullptr)
+    {
+        return false;
+    }
+
+    Product* product = productManager->findProductByBarcode(barcode);
+    if (product == nullptr)
+    {
+        return false;   // product nahi mila
+    }
+
+    outProduct = *product;
+    return true;
+}
+
+bool POSController::handleRemoveProduct(const std::string& barcode)
+{
+    if (productManager == nullptr || orderManager == nullptr)
+    {
+        return false;
+    }
+
+    Product* product = productManager->findProductByBarcode(barcode);
+    if (product == nullptr)
+    {
+        return false;   // product nahi mila
+    }
+
+    return orderManager->removeProductFromOrder(product->getProductId());
+}

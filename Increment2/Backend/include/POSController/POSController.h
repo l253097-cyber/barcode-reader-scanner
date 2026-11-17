@@ -39,6 +39,8 @@ public:
         const std::string& barcode, int quantity);
     Bill handleBillGeneration();
     bool handlePayment(double amount, const std::string& mode, const std::string& merchant);
+    bool handleProductDetails(const std::string& barcode, Product& outProduct) const;
+    bool handleRemoveProduct(const std::string& barcode);
 };
 
 #endif
