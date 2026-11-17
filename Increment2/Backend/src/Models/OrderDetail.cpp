@@ -14,7 +14,11 @@
 
 void OrderDetail::setQuantity(int newQuantity)
 {
-    // ===== MEMBER 4 : START =====
-    // TODO: Set quantity. Ignore the call if newQuantity <= 0.
-    // ===== MEMBER 4 : END =====
+	// ===== MEMBER 4 : START =====
+	// val in order can't be less than 1 but in available stock it can be 0
+   //agr new  quantity 1 se chota hai tu purani quantity ko change nahi karna chahiye
+	if (newQuantity < 1)
+		return;
+	quantity = newQuantity;
+	// ===== MEMBER 4 : END =====
 }

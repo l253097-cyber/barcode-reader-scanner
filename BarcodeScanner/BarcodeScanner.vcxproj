@@ -39,6 +39,9 @@
     <ClCompile Include="src\BarcodeScanner.cpp" />
     <ClCompile Include="src\BarcodeSystem.cpp" />
     <ClCompile Include="src\BarcodeRenderer.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\OrderFileHandler.cpp" />
+    <ClCompile Include="src\ProductFileHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BarcodeDecoder.h" />

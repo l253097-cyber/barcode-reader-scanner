@@ -1,5 +1,7 @@
 #include "FileHandlers/OrderFileHandler.h"
-
+#include <cstdlib>
+#include <iomanip>
+#include <sstream>
 /*
  * ============================================================
  *  OrderFileHandler
@@ -32,15 +34,75 @@ int OrderFileHandler::loadOrders(Order* outOrders, int maxCount) const
 bool OrderFileHandler::parseOrderRecord(const std::string& line, Order& outOrder) const
 {
     // ===== MEMBER 4 : START =====
-    // TODO: Split by '|' and build outOrder. (Assigned to Member 4 - not in Part 3 list, see README.)
-    return false;
+    const char sep = '|';          // field separator (same char as in serializeOrderRecord)
+    const int FIELD_COUNT = 9;
+
+    // Windows line endings: drop a trailing \r or \n
+    std::string text = line;
+    while (!text.empty() && (text.back() == '\r' || text.back() == '\n'))
+        text.pop_back();
+    if (text.empty())
+        return false;
+
+    // Split by sep. Empty fields (e.g. unpaid order: no mode/merchant) must be kept.
+    std::string fields[FIELD_COUNT];
+    int count = 0;
+    size_t start = 0;
+    while (true)
+    {
+        if (count >= FIELD_COUNT)              // more than 9 fields
+            return false;
+        size_t pos = text.find(sep, start);
+        if (pos == std::string::npos)
+        {
+            fields[count++] = text.substr(start);   // last field
+            break;
+        }
+        fields[count++] = text.substr(start, pos - start);
+        start = pos + 1;
+    }
+    if (count != FIELD_COUNT)                  // fewer than 9 fields
+        return false;
+
+    if (fields[0].empty())                     // an order must have an id
+        return false;
+
+    // paymentAmount must be a valid non-negative number
+    char* end = nullptr;
+    double amount = std::strtod(fields[6].c_str(), &end);
+    if (fields[6].empty() || *end != '\0' || amount < 0.0)
+        return false;
+
+    // outOrder is only changed when everything above was valid
+    outOrder = Order(fields[0], fields[1], fields[2], fields[3], fields[4],
+        fields[5], amount, fields[7], fields[8]);
+    return true;
     // ===== MEMBER 4 : END =====
 }
 
 std::string OrderFileHandler::serializeOrderRecord(const Order& order) const
 {
     // ===== MEMBER 4 : START =====
-    // TODO: Join the 9 fields with '|'. (Member 4)
-    return "";
+    const char sep = '|';
+
+    // A separator or newline inside a text field would break the line, so replace it by a space
+    auto clean = [sep](std::string s) {
+        for (char& c : s)
+            if (c == sep || c == '\n' || c == '\r')
+                c = ' ';
+        return s;
+        };
+
+    std::ostringstream out;
+    out << clean(order.getOrderId()) << sep
+        << clean(order.getOrderDate()) << sep
+        << clean(order.getOrderTime()) << sep
+        << clean(order.getCustomerName()) << sep
+        << clean(order.getCustomerContact()) << sep
+        << clean(order.getOrderStatus()) << sep
+        << std::fixed << std::setprecision(2) << order.getPaymentAmount() << sep
+        << clean(order.getPaymentMode()) << sep
+        << clean(order.getPaymentMerchant());
+    return out.str();
     // ===== MEMBER 4 : END =====
 }

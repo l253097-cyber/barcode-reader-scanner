@@ -1,4 +1,6 @@
 #include "ProductDescriptionScreen/ProductDescriptionScreen.h"
+#include <QFormLayout>
+#include <QVBoxLayout>
 
 /*
  * ============================================================
@@ -15,20 +17,51 @@
 void ProductDescriptionScreen::setupProductDescriptionScreen()
 {
     // ===== MEMBER 4 : START =====
-    // TODO: Create the 7 labels + Close button, layout, connect closeButton to handleCloseDescription.
+    setWindowTitle("Product Description");
+
+    productNameLabel = new QLabel(this);
+    barcodeLabel = new QLabel(this);
+    priceLabel = new QLabel(this);
+    unitLabel = new QLabel(this);
+    stockLabel = new QLabel(this);
+    taxLabel = new QLabel(this);
+    discountLabel = new QLabel(this);
+    closeButton = new QPushButton("Close", this);
+
+    QFormLayout* form = new QFormLayout;
+    form->addRow("Name:", productNameLabel);
+    form->addRow("Barcode:", barcodeLabel);
+    form->addRow("Price:", priceLabel);
+    form->addRow("Unit:", unitLabel);
+    form->addRow("Stock:", stockLabel);
+    form->addRow("Tax:", taxLabel);
+    form->addRow("Discount:", discountLabel);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->addLayout(form);
+    mainLayout->addWidget(closeButton);
+
+    connect(closeButton, &QPushButton::clicked,
+        this, &ProductDescriptionScreen::handleCloseDescription);
     // ===== MEMBER 4 : END =====
 }
 
 void ProductDescriptionScreen::displayProductDetails(const Product& product)
 {
     // ===== MEMBER 4 : START =====
-    // TODO: Put every product field into its label.
+    productNameLabel->setText(QString::fromStdString(product.getProductName()));
+    barcodeLabel->setText(QString::fromStdString(product.getBarcode()));
+    unitLabel->setText(QString::fromStdString(product.getMeasurementUnit()));
+    priceLabel->setText(QString::number(product.getUnitPrice(), 'f', 2));
+    taxLabel->setText(QString::number(product.getTax(), 'f', 2));
+    discountLabel->setText(QString::number(product.getDiscount(), 'f', 2));
+    stockLabel->setText(QString::number(product.getAvailableQuantity()));
     // ===== MEMBER 4 : END =====
 }
 
 void ProductDescriptionScreen::handleCloseDescription()
 {
     // ===== MEMBER 4 (EXTRA - not in the official final list) : START =====
-    // TODO: Hide/close this screen and go back to the Order screen.
+    close();
     // ===== MEMBER 4 (EXTRA - not in the official final list) : END =====
 }
