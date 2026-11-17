@@ -10,7 +10,7 @@
 #include <QString>
 #include "Models/OrderDetail.h"
 #include "POSController/POSController.h"
-
+#include "ProductDescriptionScreen/ProductDescriptionScreen.h"
 /*
  * ============================================================
  *  OrderScreen
