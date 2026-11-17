@@ -1,4 +1,5 @@
 #include "OrderScreen/OrderScreen.h"
+#include "ProductDescriptionScreen/ProductDescriptionScreen.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
@@ -162,15 +163,43 @@ void OrderScreen::handleQuantityInput(const QString& text)
 void OrderScreen::handleDescriptionButton()
 {
     // ===== MEMBER 4 : START =====
-    // TODO: Get selected row's barcode, call controller->handleProductDescription(), send result to ProductDescriptionScreen and open it.
+    int row = orderItemsTable->currentRow();
+    if (row < 0 || orderItemsTable->item(row, 0) == nullptr)
+    {
+        QMessageBox::warning(this, "Description", "Please select a product row first.");
+        return;
+    }
+    std::string barcode = orderItemsTable->item(row, 0)->text().toStdString();   // column 0 = barcode
 
+    Product product;
+    if (!controller->handleProductDetails(barcode, product))
+    {
+        QMessageBox::warning(this, "Description", "Product details not found.");
+        return;
+    }
+
+    ProductDescriptionScreen* screen = new ProductDescriptionScreen(controller);
+    screen->setAttribute(Qt::WA_DeleteOnClose);
+    screen->displayProductDetails(product);
+    screen->show();
     // ===== MEMBER 4 : END =====
 }
 
 void OrderScreen::handleRemoveProduct()
 {
     // ===== MEMBER 4 : START =====
-    // TODO: Remove the selected row's product from the order, refresh the table.
+    int row = orderItemsTable->currentRow();
+    if (row < 0 || orderItemsTable->item(row, 0) == nullptr)
+    {
+        QMessageBox::warning(this, "Remove", "Please select a product row first.");
+        return;
+    }
+    std::string barcode = orderItemsTable->item(row, 0)->text().toStdString();
+
+    if (controller->handleRemoveProduct(barcode))
+        displayOrderItems(controller->getOrderItems(), controller->getOrderItemCount());
+    else
+        QMessageBox::warning(this, "Remove", "Could not remove the product.");
     // ===== MEMBER 4 : END =====
 }
 
