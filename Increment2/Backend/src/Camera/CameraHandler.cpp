@@ -78,50 +78,46 @@ void CameraHandler::releaseCamera()
     cameraAvailable = false;   // safe to call twice: deleting nullptr does nothing
     // ===== MEMBER 1 : END =====
 }
+// Asks the camera for one picture (the picture arrives later, see below)
 bool CameraHandler::captureFrame()
 {
-    qDebug() << "Capture requested";
-
+    // ===== MEMBER 4 : START =====
+    // Defensive programming: if the camera is not ready, do not try to capture
     if (imageCapture == nullptr || !imageCapture->isReadyForCapture())
-    {    // ===== MEMBER 4 : START =====
-        qDebug() << "Camera is not ready";
         return false;
-        // ===== MEMBER 4 : END =====
-    }
 
+    // Clear the old image so an old picture is never mistaken for a new one
     capturedImage = QImage();
 
+    // The picture does not arrive immediately: capture is asynchronous, so the camera
+    // sends a signal when the picture is ready. SingleShotConnection makes this run only once.
     QObject::connect(imageCapture, &QImageCapture::imageAvailable,
         imageCapture,
-        [this](int id, const QVideoFrame& frame)
+        [this](int, const QVideoFrame& frame)
         {
             capturedImage = frame.toImage();
-
-            qDebug() << "Image received!";
-            qDebug() << "Image ID:" << id;
-            qDebug() << "Image size:" << capturedImage.size();
-            qDebug() << "Image null:" << capturedImage.isNull();
         },
         Qt::SingleShotConnection);
 
     imageCapture->capture();
-
-    qDebug() << "Capture request sent";
-    return true;
+    return true;       // request sent; the picture is not ready yet
+    // ===== MEMBER 4 : END =====
 }
 
+// Converts the coloured picture into a black and white one for the scanner
 QImage CameraHandler::convertFrameToImageData() const
 {
     // ===== MEMBER 4 : START =====
+    // If the picture has not arrived yet, return an empty QImage
     if (capturedImage.isNull())
-        //if pic hasn't arrived yet, or if it was too flat to be useful, return an empty QImage
         return QImage();
 
-    // 1) Gray picture
-    //  every pixel =1 byte (0 = dark, 255 = light)
+    // 1) Gray picture: bars do not depend on colour.
+    //    Every pixel is 1 byte (0 = dark, 255 = light)
     QImage gray = capturedImage.convertToFormat(QImage::Format_Grayscale8);
 
-    // 2) Threshold: find darkest and brightest pixel in the middle row, and set threshold to their average
+    // 2) Threshold: find the darkest and brightest pixel in the middle row
+    //    and take their average as the cut-off value
     const uchar* middleRow = gray.constScanLine(gray.height() / 2);
     int darkest = 255, brightest = 0;
     for (int x = 0; x < gray.width(); x++)
@@ -129,12 +125,12 @@ QImage CameraHandler::convertFrameToImageData() const
         if (middleRow[x] < darkest)   darkest = middleRow[x];
         if (middleRow[x] > brightest) brightest = middleRow[x];
     }
-    //flar bars can't be scanned, so if the picture is too flat, return an empty QImage
+    // A flat picture has no visible bars, so it cannot be scanned: return an empty QImage
     if (brightest - darkest < 50)
         return QImage();
     int threshold = (darkest + brightest) / 2;
 
-    // 3) every pixel darker than threshold, set to black; else set to white
+    // 3) Every pixel darker than the threshold becomes black, the rest becomes white
     for (int y = 0; y < gray.height(); y++)
     {
         uchar* line = gray.scanLine(y);
