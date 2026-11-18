@@ -5,79 +5,131 @@
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QTableWidgetItem>
+#include <QFrame>
+#include <QLabel>
+
 /*
- * ============================================================
- *  BillScreen
- *  Bill screen: bill details + payment (cash/card/wallet) + paid status.
- * ------------------------------------------------------------
- *  WHO WRITES WHAT (function ownership):
- *    Member 5 : setupBillScreen(), displayBillDetails(), handlePaymentInput(), handleConfirmPayment(), displayPaymentStatus() [EXTRA], handlePrintOrCloseBill() [EXTRA]
- *  Pre-written (getters/constructors): already done, don't touch.
- *  Rule: only edit the function bodies marked with YOUR member number.
- * ============================================================
+- ============================================================
+-  BillScreen
+-  Bill screen: bill details + payment (cash/card/wallet) + paid status.
+- ------------------------------------------------------------
+-  WHO WRITES WHAT (function ownership):
+-    Member 5 : setupBillScreen(), displayBillDetails(), handlePaymentInput(), handleConfirmPayment(), displayPaymentStatus() [EXTRA], handlePrintOrCloseBill() [EXTRA]
+-  Pre-written (getters/constructors): already done, don't touch.
+-  Rule: only edit the function bodies marked with YOUR member number.
+- ============================================================
  */
 
 void BillScreen::setupBillScreen()
 {
     // ===== MEMBER 5 : START =====
-    // TODO: Create table, labels, combo box (Cash/Card/Wallet), inputs, buttons; layout; connect signals.
     setWindowTitle("Bill");
 
-    // --- Items table ---
+    // --- Centered Title Header ---
+    QLabel* headerLabel = new QLabel("Customer Invoice & Payment", this);
+    headerLabel->setAlignment(Qt::AlignCenter);
+    headerLabel->setStyleSheet("font-size: 22px; font-weight: bold; color: #4A1FD1; margin-bottom: 4px;");
+
+    // --- Items table (centered cells) ---
     billItemsTable = new QTableWidget(0, 5, this);
     billItemsTable->setHorizontalHeaderLabels({"Product", "Qty", "Unit Price", "Discount/Unit", "Subtotal"});
     billItemsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    billItemsTable->verticalHeader()->setVisible(false);
     billItemsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     billItemsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    billItemsTable->setMaximumHeight(140);
+    billItemsTable->setAlternatingRowColors(true);
 
-    // --- Totals labels ---
-    subtotalLabel      = new QLabel("Subtotal: 0.00", this);
-    taxLabel           = new QLabel("Tax: 0.00", this);
-    discountLabel      = new QLabel("Discount: 0.00", this);
-    payableAmountLabel = new QLabel("Payable: 0.00", this);
-    QFont f = payableAmountLabel->font();
-    f.setBold(true);
-    f.setPointSize(f.pointSize() + 2);
-    payableAmountLabel->setFont(f);
+    // --- Centered Totals Card ---
+    QFrame* totalsCard = new QFrame(this);
+    totalsCard->setStyleSheet(
+        "QFrame { background-color: #F4EFFE; border: 1.5px solid #D5C4FA; border-radius: 12px; padding: 10px; }"
+        );
+    totalsCard->setMaximumWidth(460);
 
-    // --- Payment inputs ---
+    subtotalLabel      = new QLabel("Subtotal: 0.00", totalsCard);
+    taxLabel           = new QLabel("Tax: 0.00", totalsCard);
+    discountLabel      = new QLabel("Discount: 0.00", totalsCard);
+    payableAmountLabel = new QLabel("Payable: 0.00", totalsCard);
+
+    for (QLabel* lbl : { subtotalLabel, taxLabel, discountLabel, payableAmountLabel }) {
+        lbl->setAlignment(Qt::AlignCenter);
+        lbl->setStyleSheet("background: transparent; border: none; color: #2D2254; font-size: 14px;");
+    }
+
+    payableAmountLabel->setStyleSheet(
+        "background: transparent; border: none; color: #4A1FD1; font-size: 18px; font-weight: bold; margin-top: 4px;"
+        );
+
+    QVBoxLayout* totalsLayout = new QVBoxLayout(totalsCard);
+    totalsLayout->setSpacing(4);
+    totalsLayout->setAlignment(Qt::AlignCenter);
+    totalsLayout->addWidget(subtotalLabel);
+    totalsLayout->addWidget(taxLabel);
+    totalsLayout->addWidget(discountLabel);
+    totalsLayout->addWidget(payableAmountLabel);
+
+    // --- Centered Payment Inputs ---
     paymentModeSelector = new QComboBox(this);
     paymentModeSelector->addItems({"Cash", "Card", "Wallet"});
+    paymentModeSelector->setMinimumWidth(220);
 
     paymentAmountInput = new QLineEdit(this);
     paymentAmountInput->setPlaceholderText("Amount received");
+    paymentAmountInput->setAlignment(Qt::AlignCenter);
+    paymentAmountInput->setMinimumWidth(220);
 
     merchantInput = new QLineEdit(this);
     merchantInput->setPlaceholderText("Merchant / Card / Wallet name");
+    merchantInput->setAlignment(Qt::AlignCenter);
+    merchantInput->setMinimumWidth(220);
     merchantInput->setEnabled(false);   // Cash is the default mode
 
     paymentStatusLabel = new QLabel("Unpaid", this);
-    paymentStatusLabel->setStyleSheet("color: red; font-weight: bold;");
+    paymentStatusLabel->setAlignment(Qt::AlignCenter);
+    paymentStatusLabel->setStyleSheet("color: #D93025; font-weight: bold; font-size: 15px;");
 
     confirmPaymentButton = new QPushButton("Confirm Payment", this);
     confirmPaymentButton->setEnabled(false);
+    confirmPaymentButton->setMinimumWidth(170);
 
     printCloseButton = new QPushButton("Print / Close", this);
+    printCloseButton->setMinimumWidth(150);
+    printCloseButton->setStyleSheet(
+        "QPushButton { background-color: #EDE6FE; color: #5E2CED; border: 1.5px solid #C8B5FA; }"
+        "QPushButton:hover { background-color: #E0D4FD; }"
+        "QPushButton:pressed { background-color: #D0BEFC; }"
+        );
 
-    // --- Layout ---
-    QFormLayout* form = new QFormLayout();
+    // --- Centered Form Container ---
+    QWidget* formContainer = new QWidget(this);
+    formContainer->setStyleSheet("background: transparent;");
+    formContainer->setMaximumWidth(420);
+
+    QFormLayout* form = new QFormLayout(formContainer);
+    form->setFormAlignment(Qt::AlignCenter);
+    form->setLabelAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    form->setSpacing(10);
     form->addRow("Payment Mode:", paymentModeSelector);
     form->addRow("Amount:", paymentAmountInput);
     form->addRow("Merchant:", merchantInput);
 
+    // --- Centered Action Buttons ---
     QHBoxLayout* buttons = new QHBoxLayout();
-    buttons->addStretch();
+    buttons->setAlignment(Qt::AlignCenter);
+    buttons->setSpacing(14);
     buttons->addWidget(confirmPaymentButton);
     buttons->addWidget(printCloseButton);
 
+    // --- Main Centered Layout ---
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->setAlignment(Qt::AlignCenter);
+    mainLayout->setSpacing(14);
+    mainLayout->addWidget(headerLabel);
     mainLayout->addWidget(billItemsTable);
-    mainLayout->addWidget(subtotalLabel);
-    mainLayout->addWidget(taxLabel);
-    mainLayout->addWidget(discountLabel);
-    mainLayout->addWidget(payableAmountLabel);
-    mainLayout->addLayout(form);
-    mainLayout->addWidget(paymentStatusLabel);
+    mainLayout->addWidget(totalsCard, 0, Qt::AlignHCenter);
+    mainLayout->addWidget(formContainer, 0, Qt::AlignHCenter);
+    mainLayout->addWidget(paymentStatusLabel, 0, Qt::AlignHCenter);
     mainLayout->addLayout(buttons);
     setLayout(mainLayout);
 
@@ -97,14 +149,23 @@ void BillScreen::displayBillDetails(const Bill& bill)
                        .arg(QString::fromStdString(bill.getBillId()),
                             QString::fromStdString(bill.getCustomerName())));
 
-    // One bill = one product line
+    // One bill = one product line (with centered cell alignment)
     billItemsTable->setRowCount(0);
     billItemsTable->insertRow(0);
-    billItemsTable->setItem(0, 0, new QTableWidgetItem(QString::fromStdString(bill.getProductAcronym())));
-    billItemsTable->setItem(0, 1, new QTableWidgetItem(QString::number(bill.getQuantity())));
-    billItemsTable->setItem(0, 2, new QTableWidgetItem(QString::number(bill.getUnitPrice(), 'f', 2)));
-    billItemsTable->setItem(0, 3, new QTableWidgetItem(QString::number(bill.getDiscountPerUnit(), 'f', 2)));
-    billItemsTable->setItem(0, 4, new QTableWidgetItem(QString::number(bill.getSubtotal(), 'f', 2)));
+
+    QStringList rowValues = {
+        QString::fromStdString(bill.getProductAcronym()),
+        QString::number(bill.getQuantity()),
+        QString::number(bill.getUnitPrice(), 'f', 2),
+        QString::number(bill.getDiscountPerUnit(), 'f', 2),
+        QString::number(bill.getSubtotal(), 'f', 2)
+    };
+
+    for (int col = 0; col < rowValues.size(); ++col) {
+        QTableWidgetItem* item = new QTableWidgetItem(rowValues[col]);
+        item->setTextAlignment(Qt::AlignCenter);
+        billItemsTable->setItem(0, col, item);
+    }
 
     subtotalLabel->setText("Subtotal: " + QString::number(bill.getSubtotal(), 'f', 2));
     taxLabel->setText("Tax: " + QString::number(bill.getTotalTax(), 'f', 2));
@@ -135,11 +196,9 @@ void BillScreen::displayBillDetails(const Bill& bill)
     // ===== MEMBER 5 : END =====
 }
 
-
 void BillScreen::handlePaymentInput()
 {
     // ===== MEMBER 5 : START =====
-    // TODO: Validate amount + merchant fields while the user types; enable/disable Confirm button.
     // Merchant is only needed for Card / Wallet
     bool needsMerchant = (paymentModeSelector->currentText() != "Cash");
     merchantInput->setEnabled(needsMerchant);
@@ -160,7 +219,6 @@ void BillScreen::handlePaymentInput()
 void BillScreen::handleConfirmPayment()
 {
     // ===== MEMBER 5 : START =====
-    // TODO: Call controller->handlePayment(amount, mode, merchant); on success call displayPaymentStatus("Paid").
     bool ok = false;
     double amount = paymentAmountInput->text().trimmed().toDouble(&ok);
     if (!ok || amount <= 0) {
@@ -186,27 +244,24 @@ void BillScreen::handleConfirmPayment()
 void BillScreen::displayPaymentStatus(const QString& status)
 {
     // ===== MEMBER 5 (EXTRA - not in the official final list) : START =====
-    // TODO: Show status (Paid / Unpaid / error) in paymentStatusLabel.
     paymentStatusLabel->setText(status);
 
     if (status.compare("Paid", Qt::CaseInsensitive) == 0)
-        paymentStatusLabel->setStyleSheet("color: green; font-weight: bold;");
+        paymentStatusLabel->setStyleSheet("color: #1E8E3E; font-weight: bold; font-size: 16px;");
     else
-        paymentStatusLabel->setStyleSheet("color: red; font-weight: bold;");
+        paymentStatusLabel->setStyleSheet("color: #D93025; font-weight: bold; font-size: 15px;");
     // ===== MEMBER 5 (EXTRA - not in the official final list) : END =====
 }
 
 void BillScreen::handlePrintOrCloseBill()
 {
     // ===== MEMBER 5 (EXTRA - not in the official final list) : START =====
-    // TODO: Print or close the bill and go back to the dashboard.
     if (paymentStatusLabel->text() != "Paid") {
         auto reply = QMessageBox::question(this, "Bill not paid",
                                            "This bill is unpaid. Close anyway?");
         if (reply != QMessageBox::Yes)
             return;
     }
-    // Closing this widget returns to the dashboard (which should be shown by the main window).
-    close();
+    QMessageBox::information(this, "Bill Closed", "Use the top Navigation bar to return to Dashboard or start a new order.");
     // ===== MEMBER 5 (EXTRA - not in the official final list) : END =====
 }
