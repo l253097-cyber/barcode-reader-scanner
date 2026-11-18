@@ -1,6 +1,8 @@
 // PRE-WRITTEN by the team lead (Member 5 / integrator may extend it).
 #include <QApplication>
 #include "FileHandlers/ProductFileHandler.h"
+#include "FileHandlers/OrderFileHandler.h"
+#include "FileHandlers/BillFileHandler.h"
 #include "Managers/ProductManager.h"
 #include "Managers/OrderManager.h"
 #include "Managers/BillManager.h"
@@ -24,9 +26,12 @@ int main(int argc, char* argv[])
     BillManager billManager;
     PaymentManager paymentManager;
     CameraHandler cameraHandler;
+    OrderFileHandler orderFile;
+    BillFileHandler billFile;
 
     // 3. Controller = the only thing the GUI talks to
-    POSController controller(&productManager, &orderManager, &billManager, &paymentManager, &cameraHandler);
+    POSController controller(&productManager, &orderManager, &billManager, &paymentManager,
+                             &cameraHandler, &productFile, &orderFile, &billFile);
 
     // 4. GUI
     POSMainWindow window(&controller);
