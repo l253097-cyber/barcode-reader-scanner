@@ -1,48 +1,68 @@
 #include "ScanScreen/ScanScreen.h"
-
-/*
- * ============================================================
- *  ScanScreen
- *  Scan screen: camera preview, capture button, scan result.
- * ------------------------------------------------------------
- *  WHO WRITES WHAT (function ownership):
- *    Member 2 : setupScanScreen(), startCameraPreview(), handleCaptureButton(), displayScanResult(), displayScanError() [EXTRA]
- *  Pre-written (getters/constructors): already done, don't touch.
- *  Rule: only edit the function bodies marked with YOUR member number.
- * ============================================================
- */
+#include <QVBoxLayout>
+#include <QMediaCaptureSession>
+#include "Camera/CameraHandler.h"
 
 void ScanScreen::setupScanScreen()
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Create QVideoWidget, capture button, result label; layout; connect captureButton->clicked to handleCaptureButton.
-    // ===== MEMBER 2 : END =====
+    cameraPreview = new QVideoWidget(this);
+    cameraPreview->setMinimumSize(480, 360);
+    captureButton = new QPushButton("Capture", this);
+    scanResultLabel = new QLabel("Scan result will appear here", this);
+    scanResultLabel->setWordWrap(true);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(cameraPreview);
+    layout->addWidget(captureButton);
+    layout->addWidget(scanResultLabel);
+    connect(captureButton, &QPushButton::clicked, this, &ScanScreen::handleCaptureButton);
 }
 
 void ScanScreen::startCameraPreview()
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: controller->getCameraHandler()->initializeCamera() then captureSession->setVideoOutput(cameraPreview).
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2 =====
+    CameraHandler* camera = controller->getCameraHandler();
+    if (camera == nullptr)
+    {
+        displayScanError("Camera handler not available");
+        return;
+    }
+
+    if (camera->initializeCamera() == false)
+    {
+        displayScanError("No camera found");
+        return;
+    }
+    camera->getCaptureSession()->setVideoOutput(cameraPreview);
 }
 
 void ScanScreen::handleCaptureButton()
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Call controller->handleBarcodeScan(barcode, msg); show with displayScanResult() or displayScanError().
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2  =====
+    std::string barcode = "";
+    std::string message = "";
+
+    bool ok = controller->handleBarcodeScan(barcode, message);
+    if (ok)
+    {
+        displayScanResult(QString::fromStdString(barcode), QString::fromStdString(message));
+    }
+    else
+    {
+        displayScanError(QString::fromStdString(message));
+    }
 }
 
 void ScanScreen::displayScanResult(const QString& barcode, const QString& message)
 {
-    // ===== MEMBER 2 : START =====
-    // TODO: Show barcode + product info in scanResultLabel.
-    // ===== MEMBER 2 : END =====
+    // ===== MEMBER 2  =====
+    scanResultLabel->setStyleSheet("color: green;");
+    scanResultLabel->setText("Barcode: " + barcode + "\n" + message);
+
 }
 
 void ScanScreen::displayScanError(const QString& errorMessage)
 {
-    // ===== MEMBER 2 (EXTRA - not in the official final list) : START =====
-    // TODO: Show errorMessage (e.g. in red) in scanResultLabel.
-    // ===== MEMBER 2 (EXTRA - not in the official final list) : END =====
+    // ===== MEMBER 2 =====
+    scanResultLabel->setStyleSheet("color: red;");
+    scanResultLabel->setText("Error: " + errorMessage);
 }
